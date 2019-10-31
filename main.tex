@@ -34,6 +34,7 @@
 \newcommand\xtag{
 \refstepcounter{equation}%
 \;\;{\color{orange} \text{(\theequation)}}}
+\newcommand{\refl}{\textsf{refl}}
 
 \begin{document}
 \maketitle
@@ -42,8 +43,21 @@
 
 \section{Introduction}
 
-Homotopy Type Theory~\cite{hottbook} does not provide
-introduction and elimination rules for the Path type.
+In the HoTT Book~\cite{hottbook},
+the identity type is defined the same way as the identity type
+in Martin-L\"{o}f Type Theory~\cite{MLTT} (hereafter as ``MLTT''),
+but used differently (stated in Chapter 1 notes).
+The elimination rule of the identity type is called \textbf{path induction},
+but it's just another name of the MLTT \textbf J rule.
+
+We distinguish them by calling the HoTT identity type the \textit{path type},
+while the MLTT one as the \textit{identity type}.
+The most notable difference is that the path type is
+\textit{proof relevant} (implies the absence of \textit{Axiom K}).
+
+By not providing a better definition of the identity type,
+we have to assume function extensionality as an axiom,
+and we cannot compute transport on nontrivial paths.
 
 \bibliography{ref}
 \bibliographystyle{apalike}
