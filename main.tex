@@ -44,20 +44,27 @@
 \section{Introduction}
 
 In the HoTT Book~\cite{hottbook},
-the identity type is defined the same way as the identity type
-in Martin-L\"{o}f Type Theory~\cite{MLTT} (hereafter as ``MLTT''),
+the identity type is defined the same way as the one
+in Martin-L\"{o}f Type Theory (hereafter as ``MLTT'')~\cite{MLTT},
 but used differently (stated in Chapter 1 notes).
 The elimination rule of the identity type is called \textbf{path induction},
-but it's just another name of the MLTT \textbf J rule.
+but according to its definition we can tell
+it's just another name of the MLTT \textbf J rule.
 
 We distinguish them by calling the HoTT identity type the \textit{path type},
 while the MLTT one as the \textit{identity type}.
 The most notable difference is that the path type is
 \textit{proof relevant} (implies the absence of \textit{Axiom K}).
 
-By not providing a better definition of the identity type,
+By not providing a better definition of the path type,
 we have to assume function extensionality as an axiom,
 and we cannot compute transport on nontrivial paths.
+
+Although there are ways to avoid Axiom K
+(so we can safely assume the univalence axiom)
+somehow with the identity type~\cite{WithoutK},
+we are still missing a constructive version of function extensionality,
+and we also cannot compute the univalence axiom.
 
 \bibliography{ref}
 \bibliographystyle{apalike}
