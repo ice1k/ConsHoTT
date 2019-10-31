@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{etoolbox}
+\usepackage{amsthm}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[pagebackref,citecolor=blue,linkcolor=OliveGreen,urlcolor=Mahogany,colorlinks]{hyperref}
+\usepackage{color}
+\usepackage{cleveref}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\crefformat{section}{\S#2#1#3} % see manual of cleveref, section 8.2.1
+\crefformat{subsection}{\S#2#1#3}
+\crefformat{subsubsection}{\S#2#1#3}
+
+\newcommand{\TODO}[0]{{\color{red} TODO}}
+\newcommand{\lrangle}[1]{\langle #1\rangle}
+
+\title{Constructive Interpretations of HoTT}
+\author{Tesla Ice Zhang}
+
+% allow multiple labels in displaymath
+\makeatletter
+\patchcmd{\mathdisplay}
+{\let\label\label@in@display}{}
+{}{\fail}
+\makeatother
+
+% new cmd
+\newcommand\xtag{
+\refstepcounter{equation}%
+\;\;{\color{orange} \text{(\theequation)}}}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+Homotopy Type Theory~\cite{hottbook} does not provide
+introduction and elimination rules for the Path type.
+
+\bibliography{ref}
+\bibliographystyle{apalike}
+
+\end{document}
