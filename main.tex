@@ -1,3 +1,4 @@
+%! Suppress = MightBreakTexify
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
@@ -24,10 +25,12 @@
 \author{Tesla Ice Zhang}
 
 % allow multiple labels in displaymath
+%! Suppress = Makeatletter
 \makeatletter
 \patchcmd{\mathdisplay}
-{\let\label\label@in@display}{}
+{\renewcommand{\label}{\label@in@display}}{}
 {}{\fail}
+%! Suppress = Makeatletter
 \makeatother
 
 % new cmd
@@ -42,6 +45,7 @@
 \tableofcontents
 
 \section{Motivation}
+\label{sec:motivation}
 
 In the HoTT Book~\cite{hottbook},
 the identity type is defined the same way as the one
@@ -69,6 +73,7 @@ we are still missing a constructive version of function extensionality,
 and we also cannot compute the univalence axiom.
 
 \subsection{Introduction}
+\label{subsec:introduction}
 
 This note is about giving HoTT a completely constructive interpretation,
 from an implementation and user-experience perspective.
@@ -88,191 +93,11 @@ these issues are addressed:
 
 \section{Path types}
 \label{sec:path}
-
-To define Path constructively,
-we may get some inspiration from its topological definition.
-
-Open-up the \href{https://ncatlab.org/nlab/show/path}{``path'' segment in nLab},
-there is a mathematical definition of a path, written as:
-
-\[
-  \mathbb I \rightarrow X
-  \xtag
-\]
-
-Topologically, a path in a space $X$ is a continuous map
-from an interval (denoted $\mathbb I$) to $X$.
-Type theoretically, $\mathbb I$ and $X$ are supposed to be types,
-while $\rightarrow$ forms function types.
-As paths represent a relation \textit{between} two terms
-(endpoints, but type theoretically),
-these two terms should show up in the path type as well
-(similar to MLTT identity type).
-Therefore the formation rule for path types is naturally:
-
-\[
-  \cfrac{
-    \Gamma \vdash X \ \textbf{type}
-    \quad
-    \Gamma \vdash a : X
-    \quad
-    \Gamma \vdash b : X
-  }{\Gamma \vdash a =_X b \ \textbf{type}}
-  \xtag
-\]
-
-Up to the time where this note is written,
-everyone tries to define constructive HoTT defines path types this way.
-They have different introduction and elimination rules,
-but all of their introduction rules are
-based on the interval type $\mathbb I$.
-
-We can also define heterogeneous path types
-(path between two terms of different types)
-by changing the type $X$ into a type family $f$,
-indexed by the interval type $\mathbb I$:
-
-\[
-  \cfrac{
-    \Gamma \vdash X \ \textbf{type}
-    \quad
-    \Gamma \vdash a : X
-    \quad
-    \Gamma \vdash b : X
-    \quad
-    \Gamma \vdash f : \mathbb I \rightarrow X
-  }{\Gamma \vdash a =_f b \ \textbf{type}}
-  \xtag
-\]
-
-\subsection{Interval types}
-
-The interval type has very simple formation rule
-and introduction rule:
-
-\[
-  \vdash \mathbb I\ \textbf{type}
-  \xtag \quad
-  \vdash \textsf 0 : \mathbb I
-  \xtag \quad
-  \vdash \textsf 1 : \mathbb I
-  \xtag
-\]
-
-The programming language Arend~\cite{Arend} uses a different notation
-(\textsf{left} instead of \textsf 0, \textsf{right} instead of \textsf 1)
-for interval endpoints.
-We will still use \textsf 0 and \textsf 1 when talking
-about Arend for consistency.
-
-The interval type do not yet have an elimination rule,
-so we cannot have a predicate on an interval.
-
-By this definition of interval, the path type can
-have the following introduction rule
-(definitional equality between term $a$ and $b$
-is denoted as $a \equiv b$,
-usually implemented via conversion checking or normalization):
-
-\[
-  \cfrac{
-    \Gamma \vdash a =_X b \ \textbf{type}
-    \quad
-    \Gamma, i : \mathbb I \vdash t : X
-    \quad
-    (\lambda i. t) \ \textsf 0 \equiv a
-    \quad
-    (\lambda i. t) \ \textsf 1 \equiv b
-  }{
-    \Gamma \vdash \lrangle i t : a =_X b
-  }
-  \xtag
-\]
-
-Heterogeneously:
-
-\[
-  \cfrac{
-    \Gamma \vdash a =_f b \ \textbf{type}
-    \quad
-    \Gamma, i : \mathbb I \vdash t : f \ i
-    \quad
-    (\lambda i. t) \ \textsf 0 \equiv a
-    \quad
-    (\lambda i. t) \ \textsf 1 \equiv b
-  }{
-    \Gamma \vdash \lrangle i t : a =_f b
-  }
-  \xtag
-\]
-
-The above definition is used in Cubical Type Theory~\cite{CCHM},\cite{CHM}
-(hereafter as CTT), Cartesian Cubical Type
-Theory~\cite{CCTT},\cite{CCTT2},\cite{CHTT} (hereafter as CCTT).
-There are three usable implementations of CTT described in~\cite{CHM},
-including \href{https://github.com/mortberg/cubicaltt}{cubicaltt},
-\href{https://github.com/molikto/mlang}{mlang} and
-\href{https://agda.readthedocs.io/en/v2.6.0.1/language/cubical.html}
-{Cubical Agda}~\cite{CubicalAgda}.
-For CCTT, there are two, including
-\href{https://github.com/RedPRL/redtt}{redtt}
-and \href{https://github.com/mortberg/yacctt}{yacctt},
-implementing different models.
-
-The syntax is intentionally made similar to a lambda abstraction,
-as the introduction rule is the same as lambda abstraction with
-additional two definitional equalities required.
-The elimination rule for a path is therefore similar to an application,
-with two additional reduction rules -- applying an interval $i$ to
-an arbitrary term whose type is known to be a path type $a =_X b$
-will reduce to $a$ if $i \equiv \textsf 0$ or $b$ if $i \equiv \textsf 1$:
-
-\[
-  \cfrac{
-    \Gamma \vdash p : a =_X b
-  }{
-    \Gamma \vdash p\ \textsf 0 \equiv a
-    \quad
-    \Gamma \vdash p\ \textsf 1 \equiv b
-  }
-  \xtag \label{eqn:path-app}
-\]
-
-Rule~\ref{eqn:path-app} holds even if $p$ is a neutral term,
-or a contructor (in case there's path constructors,
-introduced in~\cref{sec:hit}).
-Therefore constructor application can be redex as well.
-
-CTT and CCTT (and many other variations) have different primitive
-operations defined for the interval type,
-we discuss this later in~\cref{sec:kan}.
-
-Arend on the other hand defines a primitive operator \textsf{path}
-as the introduction rule for path:
-
-\[
-  \cfrac{
-    \Gamma \vdash X \ \textbf{type}
-    \quad
-    \Gamma \vdash t : \mathbb I \rightarrow X
-  }{
-    \Gamma \vdash \textsf{path} \ t : (t \ \textsf 0) =_X (t \ \textsf 1)
-  }
-  \xtag
-\]
-
-The elimination of paths is still similar to CTT or CCTT.
+\input{path}
 
 \section{Higher inductive types}
 \label{sec:hit}
-
-By the above constructive path type,
-we can extend inductive types with path constructors.
-Recall that a constructor of an inductive type $T$ is
-similar to a function whose return type is $T$,
-but does not reduce.
-
-\TODO
+\input{hit}
 
 \section{Kan operations}
 \label{sec:kan}
