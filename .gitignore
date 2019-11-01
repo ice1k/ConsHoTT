@@ -252,3 +252,8 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+# Literate Agda
+agda.sty
+latex/
+*.agdai
