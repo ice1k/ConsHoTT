@@ -1,0 +1,51 @@
+In the HoTT Book~\cite{hottbook},
+the identity type is defined the same way as the one
+in Martin-L\"{o}f Type Theory (hereafter as ``MLTT'')~\cite{MLTT},
+but used differently (stated in Chapter 1 notes).
+The elimination rule of the identity type is called \textbf{path induction},
+but according to its definition we can tell
+it's just another name of the MLTT \textbf J rule.
+
+We distinguish them by calling the HoTT identity type the \textit{path type},
+while the MLTT one as the \textit{identity type}.
+The most notable difference is that the path type is
+\textit{proof relevant} (implies the absence of
+\textit{Axiom K}~\cite{AxiomK}).
+
+By not providing a better definition of the path type,
+we have to assume function extensionality as an axiom,
+and we cannot compute transport on nontrivial paths.
+
+To safely assume the univalence axiom, we need to avoid having Axiom K
+in our type system.
+Agda~\cite{Agda} implements~\cite{WithoutK} this via a flag \texttt{--without-K},
+while in Coq~\cite{Coq}, Axiom K is not assumed.
+Agda have further developed to have a without-K-compatible \textsf{Prop}
+universe~\cite{PropWithoutK}, a without-K-compatible definitional equality
+customization strategy~\cite{RewriteWithoutK}, and many other stuffs.
+Another dependently-typed programming language similar to Agda,
+Idris~\cite{Idris}, sticks to Axiom K and is
+inconsistent~\cite{IdrisHoTT} with a postulated univalence axiom.
+
+Even we have ways to avoid Axiom K,
+we are still missing a constructive version of function extensionality,
+and we also cannot compute the univalence axiom.
+
+\subsection{Introduction}
+\label{subsec:introduction}
+
+This note is about giving HoTT a completely constructive interpretation,
+from an implementation and user-experience perspective.
+The categorical models behind are discussed only when necessary.
+
+By giving a constructive interpretation of HoTT,
+these issues are addressed:
+
+\begin{itemize}
+\item The path type should be constructive --
+  there need to be formation, introduction and elimination rules.
+\item Transport should compute.
+\item The univalence axiom and function extensionality should compute.
+\item Inductive types~\cite{Inductive} should allow \textbf{path constructors}
+  to form \textit{higher inductive types}.
+\end{itemize}
