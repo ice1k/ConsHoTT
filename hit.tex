@@ -7,39 +7,71 @@ but does not reduce.
 Inductive types with path constructors are called
 \textit{higher inductive types} (hereafter as HIT),
 which is discussed in Chapter 6 of the HoTT Book.
-Here's a simple example of HIT,
-where the name \textsf{Seg} stands for \textit{Segment}:
+The integer type $\mathbb Z$ is a good example of HIT.
+Given this natural number $\mathbb N$ definition:
 
 \[
-  \vdash \textsf{Seg} \ \textbf{type}
+  \vdash \mathbb N \ \textbf{type}
   \xtag
 \]
 \[
-  \vdash \textsf{left} : \textsf{Seg}
+  \vdash \textsf{zero} : \mathbb N
   \xtag
   \quad
-  \vdash \textsf{right} : \textsf{Seg}
+  \vdash \textsf{succ} : \mathbb N \rightarrow \mathbb N
+  \xtag
+\]
+
+We can derive the definition of $\mathbb Z$:
+
+\[
+  \vdash \mathbb Z \ \textbf{type}
   \xtag
 \]
 \[
-  \vdash \textsf{inner} :
-  \textsf{left} =_{\textsf{Seg}} \textsf{right}
+  \vdash \textsf{pos} : \mathbb N \rightarrow \mathbb Z
+  \xtag
+  \quad
+  \vdash \textsf{neg} : \mathbb N \rightarrow \mathbb Z
+  \xtag
+\]
+\[
+  \vdash \textsf{zro} :
+  \textsf{pos zero} =_{\mathbb Z} \textsf{neg zero}
   \xtag
 \]
 
-The type \textsf{Seg} has two \textbf{point constructors}
-\textsf{left} and \textsf{right}, with one \textbf{path constructor}
-\textsf{inner} whose two endpoints are \textsf{left} and \textsf{right}.
+$\mathbb Z$ has two \textbf{point constructors}
+\textsf{pos} and \textsf{neg}, with one \textbf{path constructor}
+\textsf{zro} whose two endpoints are \textsf{pos zero} and \textsf{neg zero}.
 
-Path constructors constraint the operations defined on HITs.
-Taking the \textsf{Seg} type as an example,
-assume arbitrary type $A$, function $f : \textsf{Seg} \rightarrow A$
-should satisfy that the two endpoints of the path $p = \textsf{ap}_f(\textsf{inner})$
-should definitionally equal (notationally, $p\ \textsf 0 \equiv p\ \textsf 1$).
+Path constructors add constraints to the operations defined on HITs.
+Taking the $\mathbb Z$ type as an example,
+for an arbitrary type $A$ and a function $f : \mathbb Z \rightarrow A$,
+the path $p = \textsf{ap}_f(\textsf{zro})$ should to some extent
+satisfy the following two equalities
+(some model require these equalities to be definitional, some don't):
 
-Generally, given arbitrary HIT $T$ and arbitrary type $A$,
-function $f : T \rightarrow A$ should satisfy that for all path constructors
-$p : a =_T b$ of $T$, $f\ a \equiv f\ b$ holds definitionally.
+\[
+  p\ \textsf 0 =_A f\ (\textsf{pos zero})
+  \xtag
+  \quad
+  p\ \textsf 1 =_A f\ (\textsf{neg zero})
+  \xtag
+\]
+
+For the general case, given arbitrary HIT $T$, an arbitrary type $A$ and
+function $f : T \rightarrow A$, for all path constructors
+$p : a =_T b$ of $T$, there should be:
+
+\[
+  p\ \textsf 0 =_A f\ a
+  \xtag
+  \quad
+  p\ \textsf 1 =_A f\ b
+  \xtag
+\]
+
 We call this property ``agree on path constructors'',
 or ``respect the path constructors''.
 
@@ -61,44 +93,113 @@ and Agda (before cubical).
 
 Many HITs can be generalized as a specialized version of a standard
 quotient type. If we only postulate a quotient type, we can specialize
-a number of HITs into the quotient to avoid postulating things again.
+it into a number of other HITs to avoid postulating things again.
 
 In the HoTT library~\cite{HottCoq} of Coq, the comments in the quotient
 type module provide an ideal syntax for the quotient type definition:
 
-\begin{minted}[fontsize=\small]{coq}
-Inductive quotient : Type :=
-| class_of : A -> quotient
-| related_classes_eq : forall x y, (R x y), class_of x = class_of y
-| quotient_set : IsHSet quotient.
+\begin{minted}{coq}
+  Inductive quotient : Type :=
+  | class_of : A -> quotient
+  | related_classes_eq : forall x y,
+      (R x y), class_of x = class_of y
+  | quotient_set : IsHSet quotient.
 \end{minted}
 
+We can read it as ``\textsf{quotient} is a type,
+which has a point constructor \textsf{class\_of},
+a path constructor \textsf{related\_classes\_eq}
+and a proof that \textsf{quotient} is an HSet
+(which is also a path constructor)''.
 The \href{https://github.com/HoTT/HoTT/blob/b20bb573739284349a968bb219405255c744049d/theories/HIT/quotient.v#L40-L42}
-{actual definition} is:
+{actual definition}, on the other hand, is:
 
-\begin{minted}[fontsize=\small]{coq}
-Private Inductive quotient {sR: is_mere_relation _ R} : Type :=
-| class_of : A -> quotient.
-Axiom quotient_set : IsHSet (@quotient sR).
+\begin{minted}{coq}
+  Private Inductive quotient
+      {sR: is_mere_relation _ R} : Type :=
+  | class_of : A -> quotient.
+  Axiom related_classes_eq : forall {x y : A}, R x y ->
+      class_of x = class_of y.  
+  Axiom quotient_set : IsHSet (@quotient sR).
 \end{minted}
 
-And, of course, there's no way to ensure that functions defined on
+We can read it as ``\textsf{quotient} is a type paramterized by a relation \textsf R,
+and we postulate that the terms belonging to the same equivalent class are equivalent,
+and we postulate that \textsf{quotient} is an HSet''.
+This axiomatic definition does not ensure that functions defined on
 axiomatic HITs agree on their path constructors.
+In fact, it doesn't even ensure that terms belonging to the same equivalent
+class are equivalent.
 
 \input{latex/hit-agda-old}
 
 \subsection{Conditions}
 
-Arend has built-in support for HITs
-similar to Agda's old approach, say, provide
-path constructors as something similar to a rewriting rule, namely \textit{conditions}.
-However, Arend requires operations defined on HITs to agree on the path constructors,
+Arend supports two ways of defining HITs.
+One is like Agda's old approach, say, providing path constructors
+as something similar to a rewriting rule, namely \textit{conditions}.
+They also support CCTT-style HITs, we talk about that together with
+CCTT in~\cref{subsec:path-hit}.
+However, Arend requires operations defined on HITs to agree on the conditions,
 thus it's more consistent to the theoretical model of HITs in HoTT.
 
-\TODO
+For instance, the integer type in Arend can be defined as:
 
-\subsection{Path as constructor}
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \data Int
+    | pos Nat
+    | neg Nat \with {
+      | zero => pos zero
+    }
+\end{minted}
 
-Here's the solution in CTT and CCTT.
+Note that the constructor \textsf{neg} is attached with an additional
+condition, saying that when the parameter of
+\textsf{neg} appears to be \textsf{zero},
+the term constructed by \textsf{neg} in this case will be
+equivalent to \textsf{pos zero}.
 
-\TODO
+Consider the following function, which do not agree with this condition:
+
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \func absolute-value-bad (x : Int) : Nat
+    | pos n => suc n
+    | neg n => n
+\end{minted}
+
+When checking the \textsf{neg} clause, Arend substitutes $n$ with
+\textsf{zero} according to the condition, and check if the returned
+term, \textsf{zero}, is identical to
+\textsf{absolute-value (pos zero)}, which reduces to \textsf{suc zero}.
+It seems not, so the function is ill-formed.
+Changing the definition to the following will satisfy Arend:
+
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \func absolute-value-good (x : Int) : Nat
+    | pos n => n
+    | neg n => n
+\end{minted}
+
+This one will also work, because both sides of the condition
+are \textsf{suc zero}:
+
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \func absolute-value-cheat (x : Int) : Nat
+    | pos n => suc n
+    | neg n => suc n
+\end{minted}
+
+The path constructors encoded as conditions
+are still so different from the point constructors.
+They are not listed along with other constructors,
+and when pattern matching against an \textsf{Int},
+only \textsf{pos} and \textsf{neg} are covered.
+
+% To form more complicated path constructors
+% (which cannot be expressed as a condition),
+% we'll need to define the path constructors as constructors explicitly.
+There is a more fancy way to define path constructors,
+that, is to define them as constructors.
+
+\input{latex/hit-agda-new}
+

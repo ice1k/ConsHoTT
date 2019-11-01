@@ -19,45 +19,54 @@ data _≡_ {i} {A : Type i} (a : A) : A → Type i where
 infix 30 _↦_
 \end{code}
 
-\subsubsection{User-defined definitional equality}
+\subsubsection{Rewritings}
 
 User-defined definitional equality in Agda~\cite{RewriteWithoutK},
 which can be enabled via the flag \texttt{--rewriting},
 is used along with axiomatic path constructors in Agda.
-Here's the
-\href{https://github.com/HoTT/HoTT-Agda/blob/4943024aaeb766be911a8bd97dde363759dc8928/core/lib/types/SetQuotient.agda}
-{definition} of quotient type, \AgdaDatatype{SetQuot},
-in the HoTT-Agda library~\cite{AgdaHoTT}:
+To enable this,
+we need to specify the rewriting type:
 
-% To work with custom definitional equalities,
-% we need to specify a binary type constructor for rewriting:
-
-\begin{code}[hide]
+\begin{code}
 postulate _↦_ : ∀ {i} {A : Type i} → A → A → Type i
 {-# BUILTIN REWRITE _↦_ #-}
 \end{code}
+
+After this, we can use the \AgdaKeyword{REWRITE} pragma
+with an expression of type {$a_1$ \AgdaFunction{↦} $a_2$} provided
+to let Agda rewrite $a_1$ into $a_2$ as much as possible.
+This feature can easily make Agda infinite loop,
+so it's considered unsafe.
+
+Here's the
+\href{https://github.com/HoTT/HoTT-Agda/blob/4943024aaeb766be911a8bd97dde363759dc8928/core/lib/types/SetQuotient.agda}
+{definition} of quotient type, \AgdaDatatype{SetQuot},
+in the HoTT-Agda library~\cite{AgdaHoTT}
+(there is \AgdaFunction{SetQuot-is-set}, but omitted for simplicity):
+
 \begin{code}[hide]
 module _ {i} {A : Type i} {j} where
 
  Rel : ∀ (A : Type i) j → Type (lmax i (lsucc j))
  Rel A j = A → A → Type j
 \end{code}
-\begin{code}[hide]
+\begin{code}
  postulate SetQuot : (R : Rel A j) → Type (lmax i j)
+\end{code}
+\begin{code}[hide]
  postulate R : Rel A j
 \end{code}
 \begin{code}
  postulate  -- HIT
   q[_] : (a : A) → SetQuot R
-  quot-rel : {a₁ a₂ : A} → R a₁ a₂ → q[ a₁ ] ≡ q[ a₂ ]
+  quot-rel : {a b : A} → R a b → q[ a ] ≡ q[ b ]
 \end{code}
 \begin{code}[hide]
     -- instance SetQuot-is-set : is-set (SetQuot R)
 
  module SetQuotElim {k} {P : SetQuot R → Type k} (q[_]* : (a : A) → P q[ a ]) where
   --   {{p : {x : SetQuot R} → is-set (P x)}} (q[_]* : (a : A) → P q[ a ])
-  --   (rel* : ∀ {a₁ a₂} (r : R a₁ a₂) → q[ a₁ ]* ≡ q[ a₂ ]* [ P ↓ quot-rel r ]) where
-  postulate    f : Π (SetQuot R) P
+  --   (rel* : ∀ {a b} (r : R a b) → q[ a ]* ≡ q[ b ]* [ P ↓ quot-rel r ]) where
 \end{code}
 
 We define a custom rewriting rule to make the
@@ -65,7 +74,12 @@ quotient type's equivalent class definitional,
 based on the \AgdaFunction{quot-rel} relation:
 
 \begin{code}
-  postulate q[_]-β : (a : A) → f q[ a ] ↦ q[ a ]*
+  postulate
+   f : Π (SetQuot R) P
+   q[_]-β : (a : A) → f q[ a ] ↦ q[ a ]*
   {-# REWRITE q[_]-β #-}
 \end{code}
 
+This \AgdaDatatype{SetQuot} definition still don't check if
+the equivalent classes are really equivalent classes,
+and if the functions respect the path constructors.
