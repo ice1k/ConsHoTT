@@ -225,7 +225,7 @@ of a path as its first argument:
   \xtag
 \]
 
-Right now there is neither nontrivial paths nor paths on types,
+Right now there is neither nontrivial path nor path on types,
 while transport along identity paths is just a fancy version
 of the identity function, thus we do not need to worry about the
 computation of \textsf{coe} yet.
@@ -249,8 +249,8 @@ and the trivial path $\refl_a : a =_A a$:
 \]
 
 Note that in Arend's concrete syntax, path application is not
-$p\ i$ but $p @ i$ and lambda abstraction is not $\lambda x.y$ but
-$\textsf{\\lam} x \Rightarrow y$.
+$p\ i$ but $p\ @\ i$ and lambda abstraction is not $\lambda x.y$ but
+$\backslash{}\textsf{lam} \ x \Rightarrow y$.
 What happened in~\ref{eqn:arend-proof-sym} is that we transported
 along the following interval lambda:
 
@@ -281,3 +281,7 @@ Analyzing how it works is left as an exercise.
   \xtag \label{eqn:arend-proof-trans}
 \]
 
+\subsection{Homotopies}
+\label{subsec:hom}
+
+\TODO
