@@ -1,11 +1,14 @@
 SRC = $(wildcard *.tex)
 
 PDFS = $(SRC:.tex=.pdf)
-TEX = latexmk -pdf -silent -file-line-error
+TEX = latexmk -pdf -silent -file-line-error -shell-escape
 LAGDA = agda --latex
 
-main: main.tex latex/path-properties.tex
+main: main.tex latex/path-properties.tex latex/hit-agda-old.tex
 	$(TEX) main.tex
+
+latex/hit-agda-old.tex: hit-agda-old.lagda
+	$(LAGDA) hit-agda-old.lagda
 
 latex/path-properties.tex: path-properties.lagda
 	$(LAGDA) path-properties.lagda
@@ -20,3 +23,4 @@ endif
 
 clean:
 	$(RM) *.log *.aux *.bbl *.blg *.synctex.gz *.out *.toc *.lof *.idx *.ilg *.ind *.pdf *.cut *.fls
+	rm -rf _minted-main

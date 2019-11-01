@@ -32,29 +32,31 @@ module _ (a b : A) where
   refl i = a
 \end{code}
 
-Function composition proves congruence
+Function composition proves the \textsf{ap} (action on paths)
+operation in the HoTT Book~\cite[Lemma 2.2.1]{hottbook}
 (which is proved with the J rule in MLTT),
 and by flipping the parameters of a binary
 function we prove function extensionality
 (which is not provable in MLTT):
 
 \begin{code}
-  cong : (f : A → B) → a ≡ b → f a ≡ f b
-  cong f p i = f (p i)
+  ap : (f : A → B) → a ≡ b → f a ≡ f b
+  ap f p i = f (p i)
 
   funExt : {f g : A → B} → (∀ a → f a ≡ g a) → f ≡ g
   funExt p i a = p a i
 \end{code}
 
-We may also think of \AgdaFunction{cong} and \AgdaFunction{funExt} as:
+We may also think of \AgdaFunction{ap} and \AgdaFunction{funExt} as
+(note that the function bodies are identical):
 
 \begin{code}[hide]
 module _ (a b : A) where
  private
 \end{code}
 \begin{code}
-  cong : (f : A → B) → (I → A) → (I → B)
-  cong f p i = f (p i)
+  ap : (f : A → B) → (I → A) → (I → B)
+  ap f p i = f (p i)
 
   funExt : {f g : A → B} → (∀ a → (I → B)) → (I → (A → B))
   funExt p i a = p a i
@@ -64,7 +66,7 @@ All of these proofs are perfectly constructive.
 \AgdaFunction{sym} and \AgdaFunction{trans} are not yet provable,
 we provide a proof in Arend in~\cref{subsec:coe}
 and several proofs under CTT and CCTT in~\cref{sec:kan}.
-Unlike \AgdaFunction{cong} or \AgdaFunction{funExt}
+Unlike \AgdaFunction{ap} or \AgdaFunction{funExt}
 which have similar proofs in almost all constructive HoTT models,
 different model have different proofs of
 \AgdaFunction{sym} and \AgdaFunction{trans} --

@@ -31,9 +31,74 @@ The type \textsf{Seg} has two \textbf{point constructors}
 \textsf{left} and \textsf{right}, with one \textbf{path constructor}
 \textsf{inner} whose two endpoints are \textsf{left} and \textsf{right}.
 
-Path constructors constraints the operations defined on HITs.
+Path constructors constraint the operations defined on HITs.
+Taking the \textsf{Seg} type as an example,
+assume arbitrary type $A$, function $f : \textsf{Seg} \rightarrow A$
+should satisfy that the two endpoints of the path $p = \textsf{ap}_f(\textsf{inner})$
+should definitionally equal (notationally, $p\ \textsf 0 \equiv p\ \textsf 1$).
+
+Generally, given arbitrary HIT $T$ and arbitrary type $A$,
+function $f : T \rightarrow A$ should satisfy that for all path constructors
+$p : a =_T b$ of $T$, $f\ a \equiv f\ b$ holds definitionally.
+We call this property ``agree on path constructors'',
+or ``respect the path constructors''.
 
 Higher inductive types are similar in CTT and CCTT,
 while Arend is somehow different from the other two.
+
+\subsection{Axiomatic approach}
+
+In the old days, there were no constructive path type.
+People use the MLTT identity type and
+work with HITs by postulating their existence.
+What they're actually postulating is the existence of the path constructors.
+
+There had been a lot of work done based on this approach,
+under various proof assistants such as Hoq
+(a modified version of Coq, short for HoTT-Coq),
+% TODO: is lean based on this?
+and Agda (before cubical).
+
+Many HITs can be generalized as a specialized version of a standard
+quotient type. If we only postulate a quotient type, we can specialize
+a number of HITs into the quotient to avoid postulating things again.
+
+In the HoTT library~\cite{HottCoq} of Coq, the comments in the quotient
+type module provide an ideal syntax for the quotient type definition:
+
+\begin{minted}[fontsize=\small]{coq}
+Inductive quotient : Type :=
+| class_of : A -> quotient
+| related_classes_eq : forall x y, (R x y), class_of x = class_of y
+| quotient_set : IsHSet quotient.
+\end{minted}
+
+The \href{https://github.com/HoTT/HoTT/blob/b20bb573739284349a968bb219405255c744049d/theories/HIT/quotient.v#L40-L42}
+{actual definition} is:
+
+\begin{minted}[fontsize=\small]{coq}
+Private Inductive quotient {sR: is_mere_relation _ R} : Type :=
+| class_of : A -> quotient.
+Axiom quotient_set : IsHSet (@quotient sR).
+\end{minted}
+
+And, of course, there's no way to ensure that functions defined on
+axiomatic HITs agree on their path constructors.
+
+\input{latex/hit-agda-old}
+
+\subsection{Conditions}
+
+Arend has built-in support for HITs
+similar to Agda's old approach, say, provide
+path constructors as something similar to a rewriting rule, namely \textit{conditions}.
+However, Arend requires operations defined on HITs to agree on the path constructors,
+thus it's more consistent to the theoretical model of HITs in HoTT.
+
+\TODO
+
+\subsection{Path as constructor}
+
+Here's the solution in CTT and CCTT.
 
 \TODO
