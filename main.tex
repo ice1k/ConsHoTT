@@ -2,13 +2,13 @@
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
+\usepackage[pagebackref,citecolor=blue,linkcolor=OliveGreen,urlcolor=Mahogany,colorlinks]{hyperref}
+\usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{url}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{etoolbox}
 \usepackage{amsthm}
-\usepackage[usenames,dvipsnames]{xcolor}
-\usepackage[pagebackref,citecolor=blue,linkcolor=OliveGreen,urlcolor=Mahogany,colorlinks]{hyperref}
 \usepackage{color}
 \usepackage{cleveref}
 \usepackage{tikz}
@@ -21,6 +21,8 @@
 \newcommand{\TODO}[0]{{\color{red} TODO}}
 \newcommand{\lrangle}[1]{\langle #1\rangle}
 
+\input{agda-macros}
+
 \title{Constructive Interpretations of HoTT (Draft)}
 \author{Tesla Ice Zhang}
 
@@ -28,7 +30,7 @@
 %! Suppress = Makeatletter
 \makeatletter
 \patchcmd{\mathdisplay}
-{\renewcommand{\label}{\label@in@display}}{}
+{\let\label\label@in@display}{}
 {}{\fail}
 %! Suppress = Makeatletter
 \makeatother
@@ -89,6 +91,13 @@ these issues are addressed:
 \item The univalence axiom and function extensionality should compute.
 \item Inductive types~\cite{Inductive} should allow \textbf{path constructors}
   to form \textit{higher inductive types}.
+\end{itemize}
+
+This note assumes the reader to:
+
+\begin{itemize}
+\item Have brief understanding of HoTT.
+\item Have basic understanding of dependent type programming and MLTT.
 \end{itemize}
 
 \section{Path types}

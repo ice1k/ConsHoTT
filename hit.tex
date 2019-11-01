@@ -4,4 +4,36 @@ Recall that a constructor of an inductive type $T$ is
 similar to a function whose return type is $T$,
 but does not reduce.
 
+Inductive types with path constructors are called
+\textit{higher inductive types} (hereafter as HIT),
+which is discussed in Chapter 6 of the HoTT Book.
+Here's a simple example of HIT,
+where the name \textsf{Seg} stands for \textit{Segment}:
+
+\[
+  \vdash \textsf{Seg} \ \textbf{type}
+  \xtag
+\]
+\[
+  \vdash \textsf{left} : \textsf{Seg}
+  \xtag
+  \quad
+  \vdash \textsf{right} : \textsf{Seg}
+  \xtag
+\]
+\[
+  \vdash \textsf{inner} :
+  \textsf{left} =_{\textsf{Seg}} \textsf{right}
+  \xtag
+\]
+
+The type \textsf{Seg} has two \textbf{point constructors}
+\textsf{left} and \textsf{right}, with a \textbf{path constructor}
+\textsf{inner} whose two endpoints are \textsf{left} and \textsf{right}.
+
+Path constructors constraints the operations defined on HITs.
+
+Higher inductive types are similar in CTT and CCTT,
+while Arend is somehow different.
+
 \TODO
