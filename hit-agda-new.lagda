@@ -20,10 +20,11 @@ Example $\mathbb Z$ defined by this idea:
 
 \begin{code}
 data ℤ : Set where
-  pos neg : ℕ → ℤ
-  posneg  : pos 0 ≡ neg 0
+  pos : ℕ → ℤ
+  neg : ℕ → ℤ
+  zro : pos 0 ≡ neg 0
 \end{code}
 
-The constructor, \AgdaConstructor{posneg}, has a path type.
+The last constructor, \AgdaInductiveConstructor{zro}, has a path type.
 
 \TODO
