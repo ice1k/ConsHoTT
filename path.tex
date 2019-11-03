@@ -1,6 +1,5 @@
 To define Path constructively,
 we may get some inspiration from its topological definition.
-
 Open-up the \href{https://ncatlab.org/nlab/show/path}{``path'' segment in nLab},
 there is a mathematical definition of a path, written as:
 
@@ -11,8 +10,8 @@ there is a mathematical definition of a path, written as:
 
 Topologically, a path in a space $X$ is a continuous map
 from an interval (denoted $\mathbb I$) to $X$.
-Type theoretically, $\mathbb I$ and $X$ are supposed to be types,
-while $\rightarrow$ forms function types.
+Type theoretically, $\mathbb I$ and $X$ are types,
+and $\mathbb I \rightarrow X$ is a function type from $\mathbb I$ to $X$.
 As paths represent a relation \textit{between} two terms
 (endpoints, but type theoretically),
 these two terms should show up in the path type as well
@@ -34,12 +33,14 @@ Up to the time where this note is written,
 everyone tries to define constructive HoTT defines path types this way.
 They have different introduction and elimination rules,
 but all of their introduction rules are
-based on the interval type $\mathbb I$.
+based on the interval type $\mathbb I$
+and the elimination rules are slimiar to function application.
 
 We can also define heterogeneous path types
 (path between two terms of different types)
 by changing the type $X$ into a type family $f$,
-indexed by the interval type $\mathbb I$:
+indexed by the interval type $\mathbb I$,
+to allow paths between terms of different types:
 
 \[
   \cfrac{
@@ -169,6 +170,24 @@ as the introduction rule for path:
 
 The elimination of paths is still similar to CTT or CCTT.
 
+CTT and CCTT do not support creating paths between intervals,
+while Arend do.
+Thus the following judgement holds in Arend, say,
+that there exists a path between \textsf 0 and \textsf 1:
+
+\[
+  \vdash \textsf{path}\ (\lrangle i i) : \textsf 0 =_{\mathbb I} \textsf 1
+  \xtag \label{eqn:0-1-arend}
+\]
+
+This does not mean that \textsf 0 is identical to \textsf 1.
+They are not equivalent definitionally, but propositionally.
+Here's the concrete syntax of~\ref{eqn:0-1-arend} in Arend:
+
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \func interval-path : left = right => path (\lam i =>  i)
+\end{minted}
+
 \subsection{Path properties}
 \label{subsec:path-prop}
 \input{latex/path-properties}
@@ -248,7 +267,7 @@ and the trivial path $\refl_a : a =_A a$:
 % Note that in Arend's concrete syntax, path application is not
 % $p\ i$ but $p\ @\ i$ and lambda abstraction is not $\lambda x.y$ but
 % $\backslash{}\textsf{lam} \ x \Rightarrow y$.
-The above proof in Arend's concrete syntax is like this:
+The Arend's concrete syntax of~\ref{eqn:arend-proof-sym} is:
 
 \begin{minted}{arend-lexer.py:ArendLexer -x}
   \func sym {A : \Type} {a b : A} (p : a = b) : b = a =>

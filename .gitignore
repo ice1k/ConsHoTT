@@ -21,6 +21,7 @@ build
 *.cb2
 .*.lb
 *.cut
+main.ptb
 
 ## Intermediate documents:
 *.dvi
