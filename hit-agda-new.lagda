@@ -26,5 +26,15 @@ data ℤ : Set where
 \end{code}
 
 The last constructor, \AgdaInductiveConstructor{zro}, has a path type.
+It's still a constructor, because it can be applied to an interval
+and return an instance of $ℕ$.
+In other words,
+
+\begin{code}
+zro' : I → ℤ
+zro' i = zro i
+\end{code}
+
+
 
 \TODO
