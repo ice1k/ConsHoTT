@@ -165,13 +165,20 @@ t2c-c2t (loop _ , base)   = refl
 t2c-c2t (loop _ , loop _) = refl
 \end{code}
 
-We cannot have HITs like this with conditions,
-because none of the path constructors -- \AgdaInductiveConstructor{loop},
+We cannot define HITs like $\mathbb{S}^1$ or $T^2$ via conditions,
+because none of these path constructors -- \AgdaInductiveConstructor{loop},
 \AgdaInductiveConstructor{line1}, \AgdaInductiveConstructor{line2}
 and \AgdaInductiveConstructor{square} can be expressed as
 ``when the argument of some constructor is something,
 the term constructed by this constructor is definitionally
 equivalent to something else'',
-because they have nothing to do with any \textit{parameters} of any constructors.
+as they have nothing to do with any \textit{parameters} of any constructors.
 
+\subsubsection{Another syntax}
+
+In Arend (also in \RedPRL\ and redtt),
+path constructors are not written as a constructor but of a path type.
+Instead,
+
+\TODO
 
