@@ -134,6 +134,7 @@ class are equivalent.
 \input{latex/hit-agda-old}
 
 \subsection{Conditions}
+\label{subsec:conditions}
 
 Arend supports two ways of defining HITs.
 One is like Agda's old approach, say, providing path constructors
@@ -156,8 +157,8 @@ For instance, the integer type in Arend can be defined as:
 Note that the constructor \textsf{neg} is attached with an additional
 condition, saying that when the parameter of
 \textsf{neg} appears to be \textsf{zero},
-the term constructed by \textsf{neg} in this case will be
-equivalent to \textsf{pos zero}.
+the term constructed by \textsf{neg} in this case should be
+(definitionally) equivalent to \textsf{pos zero}.
 
 Consider the following function, which do not agree with this condition:
 
@@ -181,7 +182,11 @@ Changing the definition to the following will satisfy Arend:
 \end{minted}
 
 This one will also work, because both sides of the condition
-are \textsf{suc zero}:
+are \textsf{suc zero}
+(the function name \textsf{absolute-value} indicates that it's finding
+the absolute value of the input integer, while the following function
+is not actually doing that.
+Thus we add the postfix \textsf{-cheat} to it):
 
 \begin{minted}{arend-lexer.py:ArendLexer -x}
   \func absolute-value-cheat (x : Int) : Nat
@@ -189,17 +194,29 @@ are \textsf{suc zero}:
     | neg n => suc n
 \end{minted}
 
-The path constructors encoded as conditions
-are still so different from the point constructors.
-They are not listed along with other constructors,
-and when pattern matching against an \textsf{Int},
-only \textsf{pos} and \textsf{neg} are covered.
+% The path constructors encoded as conditions
+% are still so different from the point constructors.
+% They are not listed along with other constructors,
+% and when pattern matching against an \textsf{Int},
+% only \textsf{pos} and \textsf{neg} are covered.
+
+Conditions are simple, because they're just constraints.
+A problem is that when defining operations on condition-based HITs,
+the constraints added by conditions should hold definitionally.
+In case of the \textsf{absolute-value} function,
+$\textsf{absolute-value}(\textsf{neg zero}) \equiv
+\textsf{absolute-value}(\textsf{pos zero})$ should hold definitionally.
+There are times when definitional equalities are difficult to have,
+so conditions may not be the ultimate solution.
+
+As path constructors are called ``constructors'',
+we'll have to define them as constructors anyway.
 
 % To form more complicated path constructors
 % (which cannot be expressed as a condition),
 % we'll need to define the path constructors as constructors explicitly.
-There is a more fancy way to define path constructors,
-that, is to define them as constructors.
+% There is a more fancy way to define path constructors,
+% that is, to define them as constructors.
 
 \input{latex/hit-agda-new}
 

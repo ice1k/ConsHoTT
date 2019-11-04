@@ -52,8 +52,10 @@ to allow paths between terms of different types:
     \quad
     \Gamma \vdash f : \mathbb I \rightarrow X
   }{\Gamma \vdash a =_f b \ \textbf{type}}
-  \xtag
+  \xtag \label{eqn:hetero-path}
 \]
+
+Heterogeneous paths are used in~\cref{subsec:path-hit}.
 
 \subsection{Interval types}
 
@@ -147,7 +149,7 @@ will reduce to $a$ if $i \equiv \textsf 0$ or $b$ if $i \equiv \textsf 1$:
 
 Rule~\ref{eqn:path-app} holds even if $p$ is a neutral term,
 or a contructor (in case there's path constructors,
-introduced in~\cref{sec:hit}).
+introduced in~\cref{subsec:path-hit}).
 Therefore constructor application can be redex as well.
 
 CTT and CCTT (and many other variations) have different primitive
@@ -312,7 +314,7 @@ It looks like the following in Arend:
     coe (\lam i => a = q @ i) p right
 \end{minted}
 
-\subsection{Homotopies}
-\label{subsec:hom}
+\subsection{Fillers}
+\label{subsec:fill}
 
 \TODO
