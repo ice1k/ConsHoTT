@@ -118,15 +118,15 @@ as the filler (recall~\cref{subsec:fill}) of the following square:
 
 \begin{figure}[ht]
   \centering
-  \begin{tikzpicture}[node distance=2cm]
+  \begin{tikzpicture}[node distance=1.5cm]
     \node(1) {\AgdaInductiveConstructor{point}};
     \node(2) [right=4cm of 1] {\AgdaInductiveConstructor{point}};
     \node(4) [below of=1] {\AgdaInductiveConstructor{point}};
     \node(3) [below of=2] {\AgdaInductiveConstructor{point}};
-    \draw (1) -- (2);
+    \draw (1) -- (2) node[midway,above] {\AgdaInductiveConstructor{line1}};
     \draw (1) -- (4) node[midway,left]  {\AgdaInductiveConstructor{line2}};
     \draw (3) -- (2) node[midway,right] {\AgdaInductiveConstructor{line2}};
-    \draw (3) -- (4);
+    \draw (3) -- (4) node[midway,below] {\AgdaInductiveConstructor{line1}};
   \end{tikzpicture}
   % \caption{Square filled by \AgdaInductiveConstructor{square}}
   \label{fig:square-tikz}
