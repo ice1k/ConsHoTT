@@ -95,13 +95,14 @@ This $\mathbb{S}^1$ may not look so interesting itself,
 but there's already one thing we can prove about it
 (another interesting thing is that it's isomorphic to the integer type,
 but the proof will be easier with univalence so we discuss this later in~\cref{sec:ua}),
-that is the cartesian product of two $\mathbb{S}^1$ is isomorphic to a torus.
-A torus has a base \textsf{point}, two distinct paths (called \textsf{line1} and \textsf{line2})
-connecting the base point to itself, and a homotopy (called \textsf{square}) between the lines.
+that is the cartesian product of two $\mathbb{S}^1$ is isomorphic to a torus $T^2$
+(section 6.6 in the HoTT Book):
+-- A torus has a base \textsf{point}, two distinct paths (called \textsf{line1} and \textsf{line2})
+-- connecting the base point to itself, and a homotopy (called \textsf{square}) between the lines.
 
 \begin{code}
-data Torus : Set where
-  point : Torus
+data T² : Set where
+  point : T²
   line1 : point ≡ point
   line2 : point ≡ point
   square : PathP (λ i → line1 i ≡ line1 i) line2 line2
@@ -134,13 +135,13 @@ as the filler (recall~\cref{subsec:fill}) of the following square:
 The conversion functions are so natural:
 
 \begin{code}
-t2c : Torus → S¹ × S¹
+t2c : T² → S¹ × S¹
 t2c point        = base , base
 t2c (line1 i)    = loop i , base
 t2c (line2 j)    = base , loop j
 t2c (square i j) = loop i , loop j
 
-c2t : S¹ × S¹ → Torus
+c2t : S¹ × S¹ → T²
 c2t (base   , base)   = point
 c2t (loop i , base)   = line1 i
 c2t (base   , loop j) = line2 j
@@ -151,7 +152,7 @@ The proof that \AgdaFunction{t2c} and \AgdaFunction{c2t} are inverse
 is even simpler -- all the clauses are just \AgdaFunction{refl}:
 
 \begin{code}
-c2t-t2c :  (t : Torus) → c2t (t2c t) ≡ t
+c2t-t2c :  (t : T²) → c2t (t2c t) ≡ t
 c2t-t2c point        = refl
 c2t-t2c (line1 _)    = refl
 c2t-t2c (line2 _)    = refl
