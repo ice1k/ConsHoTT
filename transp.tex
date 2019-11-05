@@ -1,0 +1,119 @@
+\subsection{Transport}
+\label{subsec:coe}
+
+The idea of \textit{type-safe coercion} is like
+casting a variable of type $A$ to type $B$ by providing a proof
+of $A =_{\mathcal U} B$:
+
+\[
+  \textsf{coe} : A =_{\mathcal U} B \rightarrow A \rightarrow B
+  \xtag \label{eqn:coe-a-b-id}
+\]
+
+Bringing in the idea of path types,
+assuming $p : A =_{\mathcal U} B$, by~\ref{eqn:path-app}
+we know that $p \ \textsf 0 \equiv A$ and
+$p \ \textsf 1 \equiv B$,
+so~\ref{eqn:coe-a-b-path} is effectively the same
+as~\ref{eqn:coe-a-b-id}:
+
+\[
+  \textsf{coe} : (p : A =_{\mathcal U} B) \rightarrow p \ \textsf 0
+  \rightarrow p \ \textsf 1
+  \xtag \label{eqn:coe-a-b-path}
+\]
+
+The return type of \textsf{coe} can be generalized over
+the interval on the input path:
+
+\[
+  \textsf{coe} : (p : A =_{\mathcal U} B) \rightarrow p \ \textsf 0
+  \rightarrow (i : \mathbb I) \rightarrow p \ i
+  \xtag \label{eqn:coe-a-b-path-gen}
+\]
+
+\ref{eqn:coe-a-b-path-gen} is known as the ``generalized transport''
+operation, denoted as \textsf{coe} in Arend and CCTT,
+and \AgdaFunction{transp} in CTT.
+We use \textsf{coe} to refer to this general concept for consistency.
+And by the way,
+Arend's \textsf{coe} takes function over interval instead
+of a path as its first argument:
+
+\[
+  \textsf{coe} : (p : I \rightarrow \mathcal U)
+  \rightarrow p \ \textsf 0
+  \rightarrow (i : \mathbb I) \rightarrow p \ i
+  \xtag
+\]
+
+Right now there is neither nontrivial path nor path on types,
+while transport along identity paths is just a fancy version
+of the identity function, thus we do not need to worry about the
+computation of \textsf{coe} yet.
+We further discuss \textsf{coe} in~\cref{sec:ua}.
+
+In CTT and CCTT, we cannot transport along paths between paths,
+but it's not the case in Arend.
+Arend uses \textsf{coe} to prove path symmetry and transitivity.
+Here's a proof, assuming three inhabitants $a, b, c$ of type $A$
+and the trivial path $\refl_a : a =_A a$:
+
+\[
+  \cfrac{
+    \Gamma \vdash p : a =_A b
+  }{
+    \Gamma \vdash (\textsf{coe}
+    (\lambda i. (p\ i =_A a)) \ \refl_a \ \textsf 1)
+    : b =_A a
+  }
+  \xtag \label{eqn:arend-proof-sym}
+\]
+
+% Note that in Arend's concrete syntax, path application is not
+% $p\ i$ but $p\ @\ i$ and lambda abstraction is not $\lambda x.y$ but
+% $\backslash{}\textsf{lam} \ x \Rightarrow y$.
+The Arend's concrete syntax of~\ref{eqn:arend-proof-sym} is:
+
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \func sym {A : \Type} {a b : A} (p : a = b) : b = a =>
+    coe (\lam i => p @ i = a) idp right
+\end{minted}
+
+What happened in~\ref{eqn:arend-proof-sym} is that we transported
+along the following interval lambda:
+
+\[
+  f = \lambda i. (p\ i =_A a)
+  \xtag
+\]
+
+As $p : a =_A b$, we have
+$(f \ \textsf 0) \equiv (p \ \textsf 0 =_A a) \equiv (a =_A a)$ and
+$(f \ \textsf 1) \equiv (p \ \textsf 1 =_A a) \equiv (b =_A a)$,
+so $f$ is similar to a path $(a =_A a) =_{\mathcal U} (b =_A a)$.
+By providing a proof \refl of $a =_A a$,
+we obtain the proof of the right hand side of $f$, which is $b =_A a$.
+The proof of transitivity is similar, as in~\ref{eqn:arend-proof-trans}.
+Analyzing how it works is left as an exercise.
+
+\[
+  \cfrac{
+    \Gamma \vdash p : a =_A b
+    \quad
+    \Gamma \vdash q : b =_A c
+  }{
+    \Gamma \vdash (\textsf{coe}
+    (\lambda i. (a =_A q\ i)) \ p \ \textsf 1)
+    : a =_A c
+  }
+  \xtag \label{eqn:arend-proof-trans}
+\]
+
+It looks like the following in Arend:
+
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \func trans {A : \Type} {a b c : A}
+              (p : a = b) (q : b = c) : a = c =>
+    coe (\lam i => a = q @ i) p right
+\end{minted}
