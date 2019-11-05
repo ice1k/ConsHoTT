@@ -18,7 +18,7 @@ class ArendLexer(RegexLexer):
             (r'\\[a-zA-Z\-0-9]+', Keyword),
             (r'=>?', Operator),
             (r'[\(\)\{\}]', Operator),
-            (r'[:@\|]', Operator),
+            (r'[:@\|,]', Operator),
             (r'[a-zA-Z0-9_\']+', Text),
         ]
     }

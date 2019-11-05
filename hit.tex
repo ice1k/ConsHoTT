@@ -223,8 +223,34 @@ we'll have to define them as constructors anyway.
 \subsubsection{Another syntax}
 
 In Arend (also in \RedPRL\ and redtt),
-path constructors are not written as a constructor but of a path type.
-Instead,
+path constructors are not written as a constructor of path type.
+Instead, they specify the endpoints (or \textit{edges}) of a path directly.
+Here's how Arend define $\mathbb{S}^1$:
 
-\TODO
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \data S1
+    | base
+    | loop I \with {
+      | left  => base
+      | right => base
+    }
+\end{minted}
+
+As a consequence, higher-dimensional path constructors are way more
+straightforward, like the \text{square} constructor of $T^2$:
+
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \data T2
+    | point
+    | line1  I   \with { left => point | right => point }
+    | line2  I   \with { left => point | right => point }
+    | square I I \with {
+      | left,  i => line2 i
+      | right, i => line2 i
+      | i, left  => line1 i
+      | i, right => line1 i
+    }
+\end{minted}
+
+% Maybe write some redtt/RedPRL code here?
 
