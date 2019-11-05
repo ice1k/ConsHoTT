@@ -22,9 +22,9 @@ Example $\mathbb Z$ defined by this idea, in Cubical Agda:
 
 \begin{code}
 data ℤ : Set where
-  pos : ℕ → ℤ
-  neg : ℕ → ℤ
-  zro : pos 0 ≡ neg 0
+  pos  : ℕ → ℤ
+  neg  : ℕ → ℤ
+  zro  : pos 0 ≡ neg 0
 \end{code}
 
 The last constructor, \AgdaInductiveConstructor{zro}, is the path constructor.
@@ -55,9 +55,9 @@ function for the $\mathbb Z$ type:
 
 \begin{code}
 absolute-value : ℤ → ℕ
-absolute-value (pos x) = x
-absolute-value (neg x) = x
-absolute-value (zro i) = 0
+absolute-value (pos x)  = x
+absolute-value (neg x)  = x
+absolute-value (zro i)  = 0
 \end{code}
 
 The constraint added by \AgdaInductiveConstructor{zro} is that the path
@@ -74,9 +74,9 @@ We may reproduce the \textsf{absolute-value-cheat} in~\cref{subsec:conditions}:
 
 \begin{code}
 absolute-value-cheat : ℤ → ℕ
-absolute-value-cheat (pos x) = suc x
-absolute-value-cheat (neg x) = suc x
-absolute-value-cheat (zro i) = 1
+absolute-value-cheat (pos x)  = suc x
+absolute-value-cheat (neg x)  = suc x
+absolute-value-cheat (zro i)  = 1
 \end{code}
 
 % There are some other HITs where conditions cannot define but path constructors can,
@@ -87,8 +87,8 @@ can only be defined via path constructors (instead of conditions):
 
 \begin{code}
 data S¹ : Set where
-  base : S¹
-  loop : base ≡ base
+  base  : S¹
+  loop  : base ≡ base
 \end{code}
 
 This $\mathbb{S}^1$ may not look so interesting itself,
@@ -102,16 +102,39 @@ that is the cartesian product of two $\mathbb{S}^1$ is isomorphic to a torus $T^
 
 \begin{code}
 data T² : Set where
-  point : T²
-  line1 : point ≡ point
-  line2 : point ≡ point
-  square : PathP (λ i → line1 i ≡ line1 i) line2 line2
+  point   : T²
+  line1   : point ≡ point
+  line2   : point ≡ point
+  square  : PathP (λ i → line1 i ≡ line1 i) line2 line2
 \end{code}
 
 Note that \AgdaFunction{PathP} is the type for heterogeneous
 paths (recall~\ref{eqn:hetero-path}) in Cubical Agda,
 where the first parameter is the type family indexed by $\mathbb I$,
 the rest two are the endpoints.
+By this definition, the definitional equalities we get are not only:
+
+\[
+  \AgdaInductiveConstructor{square i0} \equiv \AgdaInductiveConstructor{line2}
+  \xtag
+  \quad
+  \AgdaInductiveConstructor{square i1} \equiv \AgdaInductiveConstructor{line2}
+  \xtag
+\]
+
+But also:
+
+\[
+  (λ i \ → \ \AgdaInductiveConstructor{square } i \AgdaInductiveConstructor{ i0})
+    \equiv \AgdaInductiveConstructor{line1}
+  \xtag
+\]
+\[
+  (λ i \ → \ \AgdaInductiveConstructor{square } i \AgdaInductiveConstructor{ i1})
+    \equiv \AgdaInductiveConstructor{line1}
+  \xtag
+\]
+
 We may interpret \AgdaInductiveConstructor{square}
 as the filler (recall~\cref{subsec:fill}) of the following square:
 % where $i$ goes from left to right and $j$ is from bottom to top:
@@ -136,16 +159,16 @@ The conversion functions are so natural:
 
 \begin{code}
 t2c : T² → S¹ × S¹
-t2c point        = base , base
-t2c (line1 i)    = loop i , base
-t2c (line2 j)    = base , loop j
-t2c (square i j) = loop i , loop j
+t2c point         = base , base
+t2c (line1 i)     = loop i , base
+t2c (line2 j)     = base , loop j
+t2c (square i j)  = loop i , loop j
 
 c2t : S¹ × S¹ → T²
-c2t (base   , base)   = point
-c2t (loop i , base)   = line1 i
-c2t (base   , loop j) = line2 j
-c2t (loop i , loop j) = square i j
+c2t (base   , base)    = point
+c2t (loop i , base)    = line1 i
+c2t (base   , loop j)  = line2 j
+c2t (loop i , loop j)  = square i j
 \end{code}
 
 The proof that \AgdaFunction{t2c} and \AgdaFunction{c2t} are inverse
@@ -153,16 +176,16 @@ is even simpler -- all the clauses are just \AgdaFunction{refl}:
 
 \begin{code}
 c2t-t2c :  (t : T²) → c2t (t2c t) ≡ t
-c2t-t2c point        = refl
-c2t-t2c (line1 _)    = refl
-c2t-t2c (line2 _)    = refl
-c2t-t2c (square _ _) = refl
+c2t-t2c point         = refl
+c2t-t2c (line1 _)     = refl
+c2t-t2c (line2 _)     = refl
+c2t-t2c (square _ _)  = refl
 
 t2c-c2t :  (p : S¹ × S¹) → t2c (c2t p) ≡ p
-t2c-c2t (base   , base)   = refl
-t2c-c2t (base   , loop _) = refl
-t2c-c2t (loop _ , base)   = refl
-t2c-c2t (loop _ , loop _) = refl
+t2c-c2t (base   , base)    = refl
+t2c-c2t (base   , loop _)  = refl
+t2c-c2t (loop _ , base)    = refl
+t2c-c2t (loop _ , loop _)  = refl
 \end{code}
 
 We cannot define HITs like $\mathbb{S}^1$ or $T^2$ via conditions,
