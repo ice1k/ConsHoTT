@@ -223,9 +223,11 @@ we'll have to define them as constructors anyway.
 \subsubsection{Another syntax}
 
 In Arend (also in \RedPRL\ and redtt),
-path constructors are not written as a constructor of path type.
-Instead, they specify the endpoints (or \textit{edges}) of a path directly.
-Here's how Arend define $\mathbb{S}^1$:
+path constructors are not written as constructors of path types.
+Instead, they specify the endpoints (or \textit{edges})
+of the constructor directly.
+Here's how Arend define $\mathbb{S}^1$,
+where the endpoints of \texttt{loop} is directly specified:
 
 \begin{minted}{arend-lexer.py:ArendLexer -x}
   \data S1
@@ -237,7 +239,8 @@ Here's how Arend define $\mathbb{S}^1$:
 \end{minted}
 
 As a consequence, higher-dimensional path constructors are way more
-straightforward, like the \text{square} constructor of $T^2$:
+straightforward -- like the \texttt{square} constructor of $T^2$,
+whose four edges are directly specified:
 
 \begin{minted}{arend-lexer.py:ArendLexer -x}
   \data T2
