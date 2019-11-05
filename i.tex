@@ -1,0 +1,140 @@
+\subsection{Interval types}
+\label{subsec:interval}
+
+The interval type has very simple formation rule
+and introduction rule:
+
+\[
+  \vdash \mathbb I\ \textbf{type}
+  \xtag \quad
+  \vdash \textsf 0 : \mathbb I
+  \xtag \quad
+  \vdash \textsf 1 : \mathbb I
+  \xtag
+\]
+
+The programming language Arend~\cite{Arend} uses a different notation
+(\textsf{left} instead of \textsf 0, \textsf{right} instead of \textsf 1)
+for interval endpoints.
+We will still use \textsf 0 and \textsf 1 when talking
+about Arend for consistency.
+
+The interval type do not yet have an elimination rule,
+so we cannot have a predicate on an interval.
+
+By this definition of interval, the path type can
+have the following introduction rule
+(definitional equality between term $a$ and $b$
+is denoted as $a \equiv b$,
+usually implemented via conversion checking or normalization):
+
+\[
+  \cfrac{
+    \Gamma \vdash a =_X b \ \textbf{type}
+    \quad
+    \Gamma, i : \mathbb I \vdash t : X
+    \quad
+    (\lambda i. t) \ \textsf 0 \equiv a
+    \quad
+    (\lambda i. t) \ \textsf 1 \equiv b
+  }{
+    \Gamma \vdash \lrangle i t : a =_X b
+  }
+  \xtag
+\]
+
+Heterogeneously:
+
+\[
+  \cfrac{
+    \Gamma \vdash a =_F b \ \textbf{type}
+    \quad
+    \Gamma, i : \mathbb I \vdash t : F \ i
+    \quad
+    (\lambda i. t) \ \textsf 0 \equiv a
+    \quad
+    (\lambda i. t) \ \textsf 1 \equiv b
+  }{
+    \Gamma \vdash \lrangle i t : a =_F b
+  }
+  \xtag
+\]
+
+The above definition is used in Cubical Type Theory~\cite{CCHM,CHM}
+(hereafter as CTT), Cartesian Cubical Type
+Theory~\cite{CCTT,CCTT2,CHTT} (hereafter as CCTT).
+There are three usable implementations of CTT described in~\cite{CHM},
+including cubicaltt~\cite{CubicalTT},
+mlang~\cite{Mlang} and Cubical Agda~\cite{CubicalAgda}.
+For CCTT, there are two, including
+redtt~\cite{RedTT} (somehow supersedes and deprecates
+\RedPRL~\cite{RedPRL}) and yacctt~\cite{YaccTT},
+which implement different variations of CCTT.
+
+The syntax is intentionally made similar to a lambda abstraction,
+as the introduction rule is the same as lambda abstraction with
+additional two definitional equalities required.
+The elimination rule for a path is therefore similar to an application,
+with two additional reduction rules -- applying an interval $i$ to
+an arbitrary term whose type is known to be a path type $a =_X b$
+will reduce to $a$ if $i \equiv \textsf 0$ or $b$ if $i \equiv \textsf 1$:
+
+\[
+  \cfrac{
+    \Gamma \vdash p : a =_X b
+  }{
+    \Gamma \vdash p\ \textsf 0 \equiv a
+    \quad
+    \Gamma \vdash p\ \textsf 1 \equiv b
+  }
+  \xtag \label{eqn:path-app}
+\]
+
+Rule~\ref{eqn:path-app} holds even if $p$ is a neutral term,
+or a contructor (in case there's path constructors,
+introduced in~\cref{subsec:path-hit}).
+Therefore constructor application can be redex as well.
+
+CTT and CCTT (and many other variations) have different primitive
+operations defined for the interval type,
+we discuss this later in~\cref{sec:kan}.
+
+Arend on the other hand defines a primitive operator \textsf{path}
+as the introduction rule for path:
+
+\[
+  \cfrac{
+    \Gamma \vdash X \ \textbf{type}
+    \quad
+    \Gamma \vdash t : \mathbb I \rightarrow X
+  }{
+    \Gamma \vdash \textsf{path} \ t : (t \ \textsf 0) =_X (t \ \textsf 1)
+  }
+  \xtag
+\]
+
+The elimination of paths is still similar to CTT or CCTT.
+
+CTT and CCTT do not support creating paths between intervals,
+while Arend do.
+Thus the following judgement holds in Arend, say,
+that there exists a path between \textsf 0 and \textsf 1:
+
+\[
+  \vdash \textsf{path}\ (\lrangle i i) : \textsf 0 =_{\mathbb I} \textsf 1
+  \xtag \label{eqn:0-1-arend}
+\]
+
+This does not mean that \textsf 0 is identical to \textsf 1.
+They are not equivalent definitionally, but propositionally.
+Here's the concrete syntax of~\ref{eqn:0-1-arend} in Arend:
+
+\begin{minted}{arend-lexer.py:ArendLexer -x}
+  \func interval-path : left = right => path (\lam i => i)
+\end{minted}
+
+\subsubsection{Interval operations}
+
+Different model defines different operations on the $\mathbb I$ type.
+
+\TODO

@@ -10,36 +10,34 @@ which is discussed in Chapter 6 of the HoTT Book.
 The integer type $\mathbb Z$ is a good example of HIT.
 Given this natural number $\mathbb N$ definition:
 
-\[
+\begin{gather*}
   \vdash \mathbb N \ \textbf{type}
   \xtag
-\]
-\[
+  \\
   \vdash \textsf{zero} : \mathbb N
   \xtag
   \quad
   \vdash \textsf{succ} : \mathbb N \rightarrow \mathbb N
   \xtag
-\]
+  \\
+\end{gather*}
 
 We can derive the definition of $\mathbb Z$:
 
-\[
+\begin{gather*}
   \vdash \mathbb Z \ \textbf{type}
   \xtag
-\]
-\[
+  \\
   \vdash \textsf{pos} : \mathbb N \rightarrow \mathbb Z
   \xtag
   \quad
   \vdash \textsf{neg} : \mathbb N \rightarrow \mathbb Z
   \xtag
-\]
-\[
+  \\
   \vdash \textsf{zro} :
   \textsf{pos zero} =_{\mathbb Z} \textsf{neg zero}
   \xtag
-\]
+\end{gather*}
 
 $\mathbb Z$ has two \textbf{point constructors}
 \textsf{pos} and \textsf{neg}, with one \textbf{path constructor}
@@ -79,6 +77,7 @@ Higher inductive types are similar in CTT and CCTT,
 while Arend is somehow different from the other two.
 
 \subsection{Axiomatic approach}
+\label{subsec:axiomatic}
 
 In the old days, there were no constructive path type.
 People use the MLTT identity type and
@@ -220,7 +219,7 @@ we'll have to define them as constructors anyway.
 
 \input{latex/hit-agda-new}
 
-\subsubsection{Another syntax}
+\subsubsection{Alternative syntax}
 
 In Arend (also in \RedPRL\ and redtt),
 path constructors are not written as constructors of path types.
