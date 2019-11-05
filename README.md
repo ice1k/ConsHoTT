@@ -31,7 +31,10 @@ CHCP 65001
 
 then you follow the instructions
 [here](https://github.com/agda/cubical/blob/master/INSTALL.md).
-
+Unfortunately, this project cannot be built on Windows.
+To build this note on Windows,
+you'll need to port [Makefile](./Makefile) to Windows,
+and I don't have time to do so.
 
 After all dependencies are installed,
 run this to compile the PDF:
