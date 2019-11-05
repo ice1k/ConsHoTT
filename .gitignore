@@ -256,5 +256,6 @@ TSWLatexianTemp*
 
 # Literate Agda
 agda.sty
+postprocess-latex.pl
 latex/
 *.agdai

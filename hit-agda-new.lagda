@@ -197,11 +197,3 @@ the term constructed by this constructor is definitionally
 equivalent to something else'',
 as they have nothing to do with any \textit{parameters} of any constructors.
 
-\subsubsection{Another syntax}
-
-In Arend (also in \RedPRL\ and redtt),
-path constructors are not written as a constructor but of a path type.
-Instead,
-
-\TODO
-
