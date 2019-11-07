@@ -136,5 +136,66 @@ Here's the concrete syntax of~\ref{eqn:0-1-arend} in Arend:
 \subsubsection{Interval operations}
 
 Different model defines different operations on the $\mathbb I$ type.
+Commonly defined operations are all subsets of de Morgan algebraic operations,
+making $\mathbb I$ a bounded distributive lattice.
 
-\TODO
+The three operations (min -- $\wedge$, max -- $\vee$, and involution $\neg$)
+extended to the fundamental definition are of the following typing rules:
+
+\[
+  \cfrac{
+    \Gamma \vdash i : \mathbb I
+    \quad
+    \Gamma \vdash j : \mathbb I
+  }{
+    \Gamma \vdash i \wedge j : \mathbb I
+    \quad
+    \Gamma \vdash i \vee j : \mathbb I
+  }
+  \xtag
+  \quad
+  \cfrac{
+    \Gamma \vdash i : \mathbb I
+  }{
+    \Gamma \vdash \neg i : \mathbb I
+  }
+  \xtag
+\]
+
+The interval themselves satisfy the following definitional equalities,
+given $r : \mathbb I, s : \mathbb I$:
+
+\[
+  \neg \textsf 0 \equiv \textsf 1 \xtag \quad
+  \neg \textsf 1 \equiv \textsf 0 \xtag
+\]
+\[
+  \neg (r \vee s) \equiv (\neg r) \wedge (\neg s) \xtag
+\]
+\[
+  \neg (r \wedge s) \equiv (\neg r) \vee (\neg s) \xtag
+\]
+
+The involution operation really inverts an interval, so it proves symmetry:
+
+\[
+  \cfrac{
+    \Gamma \vdash p : a =_A b
+  }{
+    \Gamma \vdash (\lrangle i\ p (\neg i)) : b =_A a
+  } \xtag
+\]
+
+We propose that instead of saying it \textit{proves} symmetry,
+it's better to say that symmetry is \textit{defined} by involution.
+
+The other two operations, $\wedge$ and $\vee$
+(commonly referred to as \textit{connections}),
+are relevant to fillers~\cref{subsec:fill}.
+We talk about them then.
+
+CTT has these three operations, while CCTT have non of these.
+Arend have non of these either.
+Another variation of CTT,
+the OP model~\cite{OPModel}, defines the connections only.
+
