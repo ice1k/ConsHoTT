@@ -259,3 +259,6 @@ agda.sty
 postprocess-latex.pl
 latex/
 *.agdai
+
+# Word-cloud
+pic-wordcloud.png

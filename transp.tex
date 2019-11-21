@@ -47,6 +47,9 @@ of a path as its first argument:
   \xtag
 \]
 
+We can state that $\textsf{coe}\ p\ a\ \textsf 0$ will give $a$ back
+(i.e. reduce to $a$).
+
 Right now there is neither nontrivial path nor path on types,
 while transport along identity paths is just a fancy version
 of the identity function, thus we do not need to worry about the
@@ -70,10 +73,10 @@ and the trivial path $\refl_a : a =_A a$:
   \xtag \label{eqn:arend-proof-sym}
 \]
 
-% Note that in Arend's concrete syntax, path application is not
-% $p\ i$ but $p\ @\ i$ and lambda abstraction is not $\lambda x.y$ but
-% $\backslash{}\textsf{lam} \ x \Rightarrow y$.
-The Arend's concrete syntax of~\ref{eqn:arend-proof-sym} is:
+In Arend's concrete syntax, path application is not
+$p\ i$ but $p\ @\ i$ and lambda abstraction is not $\lambda x.y$ but
+$\backslash{}\textsf{lam} \ x \Rightarrow y$.
+Therefore the concrete syntax of~\ref{eqn:arend-proof-sym} in Arend is:
 
 \begin{minted}{arend-lexer.py:ArendLexer -x}
   \func sym {A : \Type} {a b : A} (p : a = b) : b = a =>

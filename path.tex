@@ -71,4 +71,57 @@ Heterogeneous paths are used in~\cref{subsec:path-hit}.
 \subsection{Fillers}
 \label{subsec:fill}
 
-\TODO
+Recall~\ref{eqn:arend-proof-sym}, we can take the \textsf 1 argument away from
+the applicaiton to \textsf{coe}:
+
+\[
+  \cfrac{
+    \Gamma \vdash p : a =_A b
+  }{
+    \Gamma \vdash (\textsf{coe}
+    (\lambda i. (p\ i =_A a)) \ \refl_a)
+    : \mathbb I \rightarrow b =_A a
+  }
+  \xtag \label{eqn:coe-a-b-path-gen-eta}
+\]
+
+Also, we know that the term $t = \textsf{coe} (\lambda i. (p\ i =_A a)) \ \refl_a$
+satisfies $t\ \textsf 0 \equiv \refl_a$.
+Recall $t\ \textsf 1 : b =_A a$
+which implies the following definitional equalities:
+
+\[
+  t\ \textsf 0\ \textsf 0 \equiv a \xtag \quad
+  t\ \textsf 0\ \textsf 1 \equiv a \xtag
+\]
+\[
+  t\ \textsf 1\ \textsf 0 \equiv b \xtag \quad
+  t\ \textsf 1\ \textsf 1 \equiv a \xtag
+\]
+
+Here we can see $t$ as a higher-dimensional path,
+as it's like a function taking more than one intervals,
+while satisfying definitional equalities for all permutations of the endpoints.
+Since it's two-dimensional, we call $t$ a \textit{square},
+of the following shape:
+
+\begin{center}
+  \begin{tikzpicture}[node distance=1.5cm]
+    \node(1) {$b$ ($t\ \textsf 1\ \textsf 0, p\ \textsf 1$)};
+    \node(2) [right=4cm of 1] {$a$ ($t\ \textsf 1\ \textsf 1$)};
+    \node(4) [below of=1] {$a$ ($\refl_a\ \textsf 0, p\ \textsf 0$)};
+    \node(3) [below of=2] {$a$ ($\refl_a\ \textsf 1$)};
+    \draw (1) -- (2) node[midway,above] {$t\ \textsf 1 : b =_A a$};
+    \draw (1) -- (4) node[midway,left ] {$p$};
+    \draw (3) -- (2);
+    \draw (3) -- (4) node[midway,below] {$\refl_a$};
+    \path (1) -- (3) node[midway] {$t$};
+  \end{tikzpicture}
+\end{center}
+
+Squares can be seen as paths between paths.
+We can generalized this terminology to form topological shapes in any dimensions.
+Paths between paths are \textit{homotopies} in HoTT,
+while we usually call $t$ a \textit{filler} of the above square
+when talking about constructive interpretations.
+
