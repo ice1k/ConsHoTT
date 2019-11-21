@@ -45,3 +45,10 @@ make main
 
 Any sort of contribution is welcomed.
 
+# TODOs
+
++ Kan operations
++ Univalence
++ xtt
++ The rest of this list
+

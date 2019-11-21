@@ -87,8 +87,8 @@ the applicaiton to \textsf{coe}:
 
 Also, we know that the term $t = \textsf{coe} (\lambda i. (p\ i =_A a)) \ \refl_a$
 satisfies $t\ \textsf 0 \equiv \refl_a$.
-Recall $t\ \textsf 1 : b =_A a$
-which implies the following definitional equalities:
+Recall $t\ \textsf 1 : b =_A a$,
+we have the following definitional equalities:
 
 \[
   t\ \textsf 0\ \textsf 0 \equiv a \xtag \quad
@@ -122,6 +122,10 @@ of the following shape:
 Squares can be seen as paths between paths.
 We can generalized this terminology to form topological shapes in any dimensions.
 Paths between paths are \textit{homotopies} in HoTT,
-while we usually call $t$ a \textit{filler} of the above square
+while we informally call $t$ a \textit{filler} of the above square
 when talking about constructive interpretations.
+
+Note: fillers might be either paths or functions over intervals,
+so we can also say $\textsf{path} \ t$ is a filler of the same square.
+We use the term just to follow the convention.
 
