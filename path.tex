@@ -47,14 +47,12 @@ to allow paths between terms of different types:
 
 \[
   \cfrac{
-    \Gamma \vdash X \ \textbf{type}
+    \Gamma \vdash F : (i : \mathbb I) \rightarrow \mathcal U
     \quad
-    \Gamma \vdash a : X
+    \Gamma \vdash a : F\ \textsf 0
     \quad
-    \Gamma \vdash b : X
-    \quad
-    \Gamma \vdash f : \mathbb I \rightarrow X
-  }{\Gamma \vdash a =_f b \ \textbf{type}}
+    \Gamma \vdash b : F\ \textsf 1
+  }{\Gamma \vdash a =_F b \ \textbf{type}}
   \xtag \label{eqn:hetero-path}
 \]
 
@@ -80,7 +78,7 @@ the applicaiton to \textsf{coe}:
   }{
     \Gamma \vdash (\textsf{coe}
     (\lambda i. (p\ i =_A a)) \ \refl_a)
-    : \mathbb I \rightarrow b =_A a
+    : (i : \mathbb I) \rightarrow p\ i =_A a
   }
   \xtag \label{eqn:coe-a-b-path-gen-eta}
 \]

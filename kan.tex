@@ -55,8 +55,7 @@ In~\cite{CCHM}, there are two basic structures that the composition operation
 is based on:
 
 \begin{align*}
-  \varphi &= (\forall i. \varphi)
-            \vee (\varphi \wedge (i=0)) \vee (\varphi \wedge  (i=1))
+  \varphi &= (i=\textsf 0) \mid (i=\textsf 1)
   & \xtag \\
   u &= [ \; \varphi_1 \mapsto t_1,
       \dots, \varphi_n \mapsto t_n \; ]
@@ -77,9 +76,9 @@ The composition operation is defined as following:
   \cfrac
   {\Gamma, i : \mathbb I \vdash A \quad
     \Gamma, \varphi, i : \mathbb I \vdash u : A \quad
-    \Gamma \vdash a_0 : A(i0)[ \varphi \mapsto u(i0) ]}
+    \Gamma \vdash a_0 : A(\textsf 0)[ \varphi \mapsto u(\textsf 0) ]}
   {\Gamma \vdash \comp^i~A~[ \varphi \mapsto u ]~a_0 :
-    A(i1)[ \varphi \mapsto u(i1) ]}
+    A(\textsf 1)[ \varphi \mapsto u(\textsf 1) ]}
 \]
 
 In naturally language, given
@@ -89,3 +88,12 @@ $u$ -- a list of face-term pairs representing all the faces except
 $a_0$ and the top-missing face.
 Then, $\comp^i~A~[ \varphi \mapsto u ]~a_0$ produces the top face.
 
+In CCTT, there is another variation of $\varphi$:
+
+\[
+  \varphi = \dots \mid (i = j)
+  \xtag
+\]
+
+This face specifies a diagonal,
+giving us more computation rules.
