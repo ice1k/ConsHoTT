@@ -37,9 +37,9 @@ We can graph this process, as in~\cref{fig:simple-comp}
     \node(4) [below of=1] {$c$};
     \node(3) [below of=2] {$d$};
     \draw (1) -- (2) node[midway,above] {Obtained by composition};
-    \draw (1) -- (4) node[midway,left ] {$p : a =_A c$};
+    \draw (1) -- (4) node[midway,left ] {$p : c =_A a$};
     \draw (3) -- (4) node[midway,below] {$r : c =_A d$};
-    \draw (2) -- (3) node[midway,right] {$q : b =_A d$};
+    \draw (2) -- (3) node[midway,right] {$q : d =_A b$};
   \end{tikzpicture}
 \end{center}
 \caption{Simple composition}
@@ -52,7 +52,8 @@ We can also prove path composition by substituting $a$ with $c$.
 
 Here's the surface syntax of homogenous composition.
 In~\cite{CCHM}, there are two basic structures that the composition operation
-is based on:
+is based on (this note simplifies the definitions in the paper,
+since this note talks about the general concept instead of any specific variation):
 
 \begin{align*}
   \varphi &= (i=\textsf 0) \mid (i=\textsf 1)
@@ -70,23 +71,51 @@ Thus we can describe an open shape via $u$.
 
 The composition operation is defined as following:
 
-\newcommand{\comp}{\textsf{comp}}
+\newcommand{\comp}{\textsf{hcomp}}
 
 \[
   \cfrac
-  {\Gamma, i : \mathbb I \vdash A \quad
-    \Gamma, \varphi, i : \mathbb I \vdash u : A \quad
-    \Gamma \vdash a_0 : A(\textsf 0)[ \varphi \mapsto u(\textsf 0) ]}
-  {\Gamma \vdash \comp^i~A~[ \varphi \mapsto u ]~a_0 :
-    A(\textsf 1)[ \varphi \mapsto u(\textsf 1) ]}
+  {\Gamma \vdash F : \mathbb I \rightarrow \mathcal U \quad
+    \Gamma \vdash a : F \ \textsf 0}
+  {\Gamma \vdash \comp~F~(\lrangle i u)~a : F \ \textsf 1}
+  \xtag
 \]
 
+Where, the faces in $u$ should include all of the
+side faces.
+Also, the terms in $u$ should fill the corresponding faces --
+the endpoints need to match.
+
 In naturally language, given
-$A$ -- a type indexed by $\mathbb I$,
-$a_0$ -- a term for the bottom face of the cube,
+$F$ -- a type indexed by $\mathbb I$,
+$a$ -- a term for the bottom face of the cube,
 $u$ -- a list of face-term pairs representing all the faces except
-$a_0$ and the top-missing face.
-Then, $\comp^i~A~[ \varphi \mapsto u ]~a_0$ produces the top face.
+$a$ and the top-missing face.
+Then, $\comp~F~(\lrangle i u)~a$ produces the top face.
+As an example, the ``Obtained by composition'' path in~\cref{fig:simple-comp}
+can be written as:
+
+\[
+  \lrangle i \comp~(\lambda a. A)~(\lrangle j [
+  (i = \textsf 0) \mapsto p~j, (i = \textsf 1) \mapsto q~j ])~r
+  \xtag
+\]
+
+The above terms does the same job as the following
+\textsf{coe}-based operation:
+
+\[
+  \lrangle i
+  \textsf{coe}~(\lambda j. p~j =_A q~j)~r
+\]
+
+However, $\comp$ has well-defined computation rules,
+while \textsf{coe} over paths or $\mathbb I$ don't.
+$\comp$ does not work for paths or $\mathbb I$ either,
+but it does almost everything that \textsf{coe} over paths can do,
+by wrapping all the complicated paths into $u$.
+
+\subsection{Derived operations}
 
 In CCTT, there is another variation of $\varphi$:
 
@@ -95,5 +124,39 @@ In CCTT, there is another variation of $\varphi$:
   \xtag
 \]
 
-This face specifies a diagonal,
-giving us more computation rules.
+This face specifies a diagonal.
+It provides more computation rules and simplifies some certain
+$\comp$ operations.
+
+Similar to the generalization of \textsf{coe} in~\cref{subsec:coe},
+there's also a generalized version of $\comp$
+where it takes one more $\mathbb I$ parameter $i$,
+and return the \textit{slice} of the cube at the position
+specified by $i$.
+In other words, if we see the square in~\cref{fig:simple-comp} as a path
+between the bottom face $r$ and the top face,
+the generalized composition can return any point (which is in fact a path) on the path.
+The typing rule is similar to:
+
+By having generalized composition,
+what we can actually obtain from this generalization
+is the filler to the square in~\cref{fig:simple-comp}
+(which is usually a high-dimensional path),
+while we often take the top face directly.
+We may hereafter refer to this generalized composition as \textsf{hfill}.
+
+\[
+  \cfrac
+  {\Gamma \vdash F : \mathbb I \rightarrow \mathcal U \quad
+    \Gamma \vdash a : F \ \textsf 0}
+  {\Gamma \vdash \textsf{hfill}~F~(\lrangle i u)~a : (i : \mathbb I) \rightarrow F \ i}
+  \xtag
+\]
+
+We may also say that \textsf{hfill} is an operation \textit{derived} from
+\textsf{hcomp} (instead of \textit{generalized}).
+
+In Cubical Agda, $u$ is represented as a special type of lambda expression,
+of type \AgdaFunction{Partial}.
+
+\input{latex/hcomp-agda}

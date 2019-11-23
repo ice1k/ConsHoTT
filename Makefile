@@ -5,7 +5,7 @@ TEX = latexmk -pdf -silent -file-line-error -shell-escape
 LAGDA = agda --latex
 AGDA_POSTPROCESS_DIR := $(shell dirname $(shell dirname $(shell agda-mode locate)))
 
-main: main.tex latex/path-properties.tex latex/hit-agda-old.tex latex/hit-agda-new.tex
+main: main.tex latex/path-properties.tex latex/hit-agda-old.tex latex/hit-agda-new.tex latex/hcomp-agda.tex
 	$(TEX) main.tex
 
 latex/hit-agda-old.tex: hit-agda-old.lagda
@@ -15,6 +15,9 @@ latex/hit-agda-new.tex: hit-agda-new.lagda # postprocess-latex.pl
 	$(LAGDA) hit-agda-new.lagda
 # perl postprocess-latex.pl latex/hit-agda-new.tex > latex/hit-agda-new.processed
 # mv latex/hit-agda-new.processed latex/hit-agda-new.tex
+
+latex/hcomp-agda.tex: hcomp-agda.lagda
+	$(LAGDA) hcomp-agda.lagda
 
 latex/path-properties.tex: path-properties.lagda
 	$(LAGDA) path-properties.lagda
