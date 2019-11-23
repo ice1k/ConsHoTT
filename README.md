@@ -19,7 +19,7 @@ pip install Pygments
 or:
 
 ```bash
-pip3 instead Pygments
+pip3 install Pygments
 ```
 
 Installing Agda requires an extra step if you're on a
