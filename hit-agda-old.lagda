@@ -27,7 +27,7 @@ is used along with axiomatic path constructors in Agda.
 To enable this,
 we need to specify the rewriting type:
 
-\begin{code}
+\begin{code}[number]
 postulate _↦_ : ∀ {i} {A : Type i} → A → A → Type i
 {-# BUILTIN REWRITE _↦_ #-}
 \end{code}
@@ -50,13 +50,13 @@ module _ {i} {A : Type i} {j} where
  Rel : ∀ (A : Type i) j → Type (lmax i (lsucc j))
  Rel A j = A → A → Type j
 \end{code}
-\begin{code}
+\begin{code}[number]
  postulate SetQuot : (R : Rel A j) → Type (lmax i j)
 \end{code}
 \begin{code}[hide]
  postulate R : Rel A j
 \end{code}
-\begin{code}
+\begin{code}[number]
  postulate  -- HIT
   q[_] : (a : A) → SetQuot R
   quot-rel : {a b : A} → R a b → q[ a ] ≡ q[ b ]
@@ -73,7 +73,7 @@ We define a custom rewriting rule to make the
 quotient type's equivalent class definitional,
 based on the \AgdaFunction{quot-rel} relation:
 
-\begin{code}
+\begin{code}[number]
   postulate
    f : Π (SetQuot R) P
    q[_]-β : (a : A) → f q[ a ] ↦ q[ a ]*

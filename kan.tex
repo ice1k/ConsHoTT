@@ -1,7 +1,91 @@
 \section{Kan operations}
 \label{sec:kan}
 
-Normally there's a primitive operation on paths,
-namely ``Homogenous Composition''.
+In~\cref{subsec:coe}, we have seen an operation on paths,
+that is \textsf{coe}, which returns a path~\footnote
+{It's not actually a path in Arend, but a function over intervals.
+  We can say it's \textit{almost} a path.}.
+Since it returns a path, we may wonder how is the returned path
+represented internally.
+Ideally, we want \textsf{coe} to be a built-in but reducible function,
+which means that it \textbf{computes} when fully applied.
+Unfortunately, \textsf{coe} in Arend only computes in certain hard-coded cases,
+which is not ideal.
+There is a more general operation in CTT and CCTT which allows computation
+on path operations, namely \textit{Homogenous composition}.
 
-\TODO
+The idea is in one sentence:
+
+\begin{displayquote}
+  For any n-dimensional cube, it has $2 \times n$ faces.
+  If we can construct $2 \times n - 1$ of them,
+  the last one face can be obtained by doing a homogenous composition.
+\end{displayquote}
+
+In case it's two-dimensional, the cube becomes a square,
+and it has four faces, which are all one-dimensional paths.
+If we can have three of these paths,
+we can obtain the last path via homogenous composition.
+We can graph this process, as in~\cref{fig:simple-comp}
+(assuming $\vdash a, b, c, d : A$).
+
+\begin{figure}
+\begin{center}
+  \begin{tikzpicture}[node distance=1.5cm]
+    \node(1) {$a$};
+    \node(2) [right=4cm of 1] {$b$};
+    \node(4) [below of=1] {$c$};
+    \node(3) [below of=2] {$d$};
+    \draw (1) -- (2) node[midway,above] {Obtained by composition};
+    \draw (1) -- (4) node[midway,left ] {$p : a =_A c$};
+    \draw (3) -- (4) node[midway,below] {$r : c =_A d$};
+    \draw (2) -- (3) node[midway,right] {$q : b =_A d$};
+  \end{tikzpicture}
+\end{center}
+\caption{Simple composition}
+\label{fig:simple-comp}
+\end{figure}
+
+This looks very similar to~\cref{fig:filler}
+if we substitute $a$ with $b$ and $b, c, d$ with $a$.
+We can also prove path composition by substituting $a$ with $c$.
+
+Here's the surface syntax of homogenous composition.
+In~\cite{CCHM}, there are two basic structures that the composition operation
+is based on:
+
+\begin{align*}
+  \varphi &= (\forall i. \varphi)
+            \vee (\varphi \wedge (i=0)) \vee (\varphi \wedge  (i=1))
+  & \xtag \\
+  u &= [ \; \varphi_1 \mapsto t_1,
+      \dots, \varphi_n \mapsto t_n \; ]
+  & \xtag
+\end{align*}
+
+$\varphi$ is called the \textit{Face lattice},
+which stands for a constraint that specifies a face.
+$u$ is a list of face-term pair $\varphi \mapsto t$,
+where each pair specifies a term $t$ for a face $\varphi$.
+Thus we can describe an open shape via $u$.
+
+The composition operation is defined as following:
+
+\newcommand{\comp}{\textsf{comp}}
+
+\[
+  \cfrac
+  {\Gamma, i : \mathbb I \vdash A \quad
+    \Gamma, \varphi, i : \mathbb I \vdash u : A \quad
+    \Gamma \vdash a_0 : A(i0)[ \varphi \mapsto u(i0) ]}
+  {\Gamma \vdash \comp^i~A~[ \varphi \mapsto u ]~a_0 :
+    A(i1)[ \varphi \mapsto u(i1) ]}
+\]
+
+In naturally language, given
+$A$ -- a type indexed by $\mathbb I$,
+$a_0$ -- a term for the bottom face of the cube,
+$u$ -- a list of face-term pairs representing all the faces except
+$a_0$ and the top-missing face.
+Then, $\comp^i~A~[ \varphi \mapsto u ]~a_0$ produces the top face.
+

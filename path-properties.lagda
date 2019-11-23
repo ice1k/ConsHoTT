@@ -14,7 +14,7 @@ proves reflexivity of paths:
 module _ (a : A) where
  private
 \end{code}
-\begin{code}
+\begin{code}[number]
   refl : a ≡ a
   refl i = a
 \end{code}
@@ -27,7 +27,7 @@ so we can think of \AgdaFunction{refl} as
 module _ (a b : A) where
  private
 \end{code}
-\begin{code}
+\begin{code}[number]
   refl : I → A
   refl i = a
 \end{code}
@@ -39,7 +39,7 @@ and by flipping the parameters of a binary
 function we prove function extensionality
 (which is not provable in MLTT):
 
-\begin{code}
+\begin{code}[number]
   ap : (f : A → B) → a ≡ b → f a ≡ f b
   ap f p i = f (p i)
 
@@ -54,7 +54,7 @@ We may also think of \AgdaFunction{ap} and \AgdaFunction{funExt} as
 module _ (a b : A) where
  private
 \end{code}
-\begin{code}
+\begin{code}[number]
   ap : (f : A → B) → (I → A) → (I → B)
   ap f p i = f (p i)
 

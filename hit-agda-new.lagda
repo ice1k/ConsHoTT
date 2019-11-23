@@ -20,7 +20,7 @@ so we can put them together and form a new language structure,
 which is our path constructors.
 Example $\mathbb Z$ defined by this idea, in Cubical Agda:
 
-\begin{code}
+\begin{code}[number]
 data ℤ : Set where
   pos  : ℕ → ℤ
   neg  : ℕ → ℤ
@@ -33,7 +33,7 @@ while it's still a constructor, because it can be applied to an interval
 and return an instance of $ℕ$.
 In other words,
 
-\begin{code}
+\begin{code}[number]
 zro' : I → ℤ
 zro' i = zro i
 \end{code}
@@ -53,7 +53,7 @@ a part of the pattern matching
 As an example, here's the \AgdaFunction{absolute-value}
 function for the $\mathbb Z$ type:
 
-\begin{code}
+\begin{code}[number]
 absolute-value : ℤ → ℕ
 absolute-value (pos x)  = x
 absolute-value (neg x)  = x
@@ -72,7 +72,7 @@ that \AgdaFunction{absolute-value} respects \AgdaInductiveConstructor{zro}.
 
 We may reproduce the \textsf{absolute-value-cheat} in~\cref{subsec:conditions}:
 
-\begin{code}
+\begin{code}[number]
 absolute-value-cheat : ℤ → ℕ
 absolute-value-cheat (pos x)  = suc x
 absolute-value-cheat (neg x)  = suc x
@@ -85,7 +85,7 @@ absolute-value-cheat (zro i)  = 1
 Some very interesting HITs such as the $\mathbb{S}^1$ type,
 can only be defined via path constructors (instead of conditions):
 
-\begin{code}
+\begin{code}[number]
 data S¹ : Set where
   base  : S¹
   loop  : base ≡ base
@@ -100,7 +100,7 @@ that is the cartesian product of two $\mathbb{S}^1$ is isomorphic to a torus $T^
 -- A torus has a base \textsf{point}, two distinct paths (called \textsf{line1} and \textsf{line2})
 -- connecting the base point to itself, and a homotopy (called \textsf{square}) between the lines.
 
-\begin{code}
+\begin{code}[number]
 data T² : Set where
   point   : T²
   line1   : point ≡ point
@@ -157,7 +157,7 @@ as the filler (recall~\cref{subsec:fill}) of the following square:
 
 The conversion functions are so natural:
 
-\begin{code}
+\begin{code}[number]
 t2c : T² → S¹ × S¹
 t2c point         = base , base
 t2c (line1 i)     = loop i , base
@@ -174,7 +174,7 @@ c2t (loop i , loop j)  = square i j
 The proof that \AgdaFunction{t2c} and \AgdaFunction{c2t} are inverse
 is even simpler -- all the clauses are just \AgdaFunction{refl}:
 
-\begin{code}
+\begin{code}[number]
 c2t-t2c :  (t : T²) → c2t (t2c t) ≡ t
 c2t-t2c point         = refl
 c2t-t2c (line1 _)     = refl
