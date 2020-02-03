@@ -22,6 +22,12 @@ or:
 pip3 install Pygments
 ```
 
+Installing TeXLive && Pygments on NixOS:
+
+```bash
+nix-env -iA nixos.python37Packages.pygments nixos.texlive.combined.scheme-full
+```
+
 Installing Agda requires an extra step if you're on a
 non-English version of Windows:
 
