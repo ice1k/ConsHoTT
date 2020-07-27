@@ -3,7 +3,7 @@
 open import Cubical.Core.Everything
 open import Cubical.Foundations.Prelude
 open import Cubical.Data.Nat
-open import Cubical.Data.Prod hiding (_×_) renaming (_×Σ_ to _×_)
+open import Cubical.Data.Prod
 variable A B : Set
 \end{code}
 
