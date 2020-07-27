@@ -12,14 +12,14 @@ of $A =_{\mathcal U} B$:
 
 Bringing in the idea of path types,
 assuming $p : A =_{\mathcal U} B$, by~\ref{eqn:path-app}
-we know that $p \ \textsf 0 \equiv A$ and
-$p \ \textsf 1 \equiv B$,
+we know that $p~\textsf 0 \equiv A$ and
+$p~\textsf 1 \equiv B$,
 so~\ref{eqn:coe-a-b-path} is effectively the same
 as~\ref{eqn:coe-a-b-id}:
 
 \[
-  \textsf{coe} : (p : A =_{\mathcal U} B) \rightarrow p \ \textsf 0
-  \rightarrow p \ \textsf 1
+  \textsf{coe} : (p : A =_{\mathcal U} B) \rightarrow p~\textsf 0
+  \rightarrow p~\textsf 1
   \xtag \label{eqn:coe-a-b-path}
 \]
 
@@ -27,8 +27,8 @@ The return type of \textsf{coe} can be generalized over
 the interval on the input path:
 
 \[
-  \textsf{coe} : (p : A =_{\mathcal U} B) \rightarrow p \ \textsf 0
-  \rightarrow (i : \mathbb I) \rightarrow p \ i
+  \textsf{coe} : (p : A =_{\mathcal U} B) \rightarrow p~\textsf 0
+  \rightarrow (i : \mathbb I) \rightarrow p~i
   \xtag \label{eqn:coe-a-b-path-gen}
 \]
 
@@ -42,12 +42,12 @@ of a path as its first argument:
 
 \[
   \textsf{coe} : (p : I \rightarrow \mathcal U)
-  \rightarrow p \ \textsf 0
-  \rightarrow (i : \mathbb I) \rightarrow p \ i
+  \rightarrow p~\textsf 0
+  \rightarrow (i : \mathbb I) \rightarrow p~i
   \xtag
 \]
 
-We can state that $\textsf{coe}\ p\ a\ \textsf 0$ will give $a$ back
+We can state that $\textsf{coe}~p~a~\textsf 0$ will give $a$ back
 (i.e. reduce to $a$).
 
 Right now there is neither nontrivial path nor path on types,
@@ -67,15 +67,15 @@ and the trivial path $\refl_a : a =_A a$:
     \Gamma \vdash p : a =_A b
   }{
     \Gamma \vdash (\textsf{coe}
-    (\lambda i. (p\ i =_A a)) \ \refl_a \ \textsf 1)
+    (\lambda i. (p~i =_A a))~\refl_a~\textsf 1)
     : b =_A a
   }
   \xtag \label{eqn:arend-proof-sym}
 \]
 
 In Arend's concrete syntax, path application is not
-$p\ i$ but $p\ @\ i$ and lambda abstraction is not $\lambda x.y$ but
-$\backslash{}\textsf{lam} \ x \Rightarrow y$.
+$p~i$ but $p~@~i$ and lambda abstraction is not $\lambda x.y$ but
+$\backslash{}\textsf{lam}~x \Rightarrow y$.
 Therefore the concrete syntax of~\ref{eqn:arend-proof-sym} in Arend is:
 
 \begin{minted}{arend-lexer.py:ArendLexer -x}
@@ -87,13 +87,13 @@ What happened in~\ref{eqn:arend-proof-sym} is that we transported
 along the following interval lambda:
 
 \[
-  f = \lambda i. (p\ i =_A a)
+  f = \lambda i. (p~i =_A a)
   \xtag
 \]
 
 As $p : a =_A b$, we have
-$(f \ \textsf 0) \equiv (p \ \textsf 0 =_A a) \equiv (a =_A a)$ and
-$(f \ \textsf 1) \equiv (p \ \textsf 1 =_A a) \equiv (b =_A a)$,
+$(f~\textsf 0) \equiv (p~\textsf 0 =_A a) \equiv (a =_A a)$ and
+$(f~\textsf 1) \equiv (p~\textsf 1 =_A a) \equiv (b =_A a)$,
 so $f$ is similar to a path $(a =_A a) =_{\mathcal U} (b =_A a)$.
 By providing a proof $\refl_a$ of $a =_A a$,
 we obtain the proof of the right hand side of $f$, which is $b =_A a$.
@@ -107,7 +107,7 @@ Analyzing how it works is left as an exercise.
     \Gamma \vdash q : b =_A c
   }{
     \Gamma \vdash (\textsf{coe}
-    (\lambda i. (a =_A q\ i)) \ p \ \textsf 1)
+    (\lambda i. (a =_A q~i))~p~\textsf 1)
     : a =_A c
   }
   \xtag \label{eqn:arend-proof-trans}

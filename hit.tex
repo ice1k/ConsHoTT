@@ -14,7 +14,7 @@ The integer type $\mathbb Z$ is a good example of HIT.
 Given this natural number $\mathbb N$ definition:
 
 \begin{gather*}
-  \vdash \mathbb N \ \textbf{type}
+  \vdash \mathbb N~\textbf{type}
   \xtag
   \\
   \vdash \textsf{zero} : \mathbb N
@@ -28,7 +28,7 @@ Given this natural number $\mathbb N$ definition:
 We can derive the definition of $\mathbb Z$:
 
 \begin{gather*}
-  \vdash \mathbb Z \ \textbf{type}
+  \vdash \mathbb Z~\textbf{type}
   \xtag
   \\
   \vdash \textsf{pos} : \mathbb N \rightarrow \mathbb Z
@@ -54,10 +54,10 @@ satisfy the following two equalities
 (some model require these equalities to be definitional, some don't):
 
 \[
-  p\ \textsf 0 =_A f\ (\textsf{pos zero})
+  p~\textsf 0 =_A f~(\textsf{pos zero})
   \xtag
   \quad
-  p\ \textsf 1 =_A f\ (\textsf{neg zero})
+  p~\textsf 1 =_A f~(\textsf{neg zero})
   \xtag
 \]
 
@@ -66,10 +66,10 @@ function $f : T \rightarrow A$, for all path constructors
 $p : a =_T b$ of $T$, there should be:
 
 \[
-  p\ \textsf 0 =_A f\ a
+  p~\textsf 0 =_A f~a
   \xtag
   \quad
-  p\ \textsf 1 =_A f\ b
+  p~\textsf 1 =_A f~b
   \xtag
 \]
 
@@ -224,7 +224,7 @@ we'll have to define them as constructors anyway.
 
 \subsubsection{Alternative syntax}
 
-In Arend (also in \RedPRL\ and redtt),
+In Arend (also in \RedPRL~and redtt),
 path constructors are not written as constructors of path types.
 Instead, they specify the endpoints (or \textit{edges})
 of the constructor directly.

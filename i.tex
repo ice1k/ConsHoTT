@@ -5,7 +5,7 @@ The interval type has very simple formation rule
 and introduction rule:
 
 \[
-  \vdash \mathbb I\ \textbf{type}
+  \vdash \mathbb I~\textbf{type}
   \xtag \quad
   \vdash \textsf 0 : \mathbb I
   \xtag \quad
@@ -30,15 +30,15 @@ usually implemented via conversion checking or normalization):
 
 \[
   \cfrac{
-    \Gamma \vdash a =_X b \ \textbf{type}
+    \Gamma \vdash a =_X b~\textbf{type}
     \quad
     \Gamma, i : \mathbb I \vdash t : X
     \quad
-    (\lambda i. t) \ \textsf 0 \equiv a
+    (\lambda i. t)~\textsf 0 \equiv a
     \quad
-    (\lambda i. t) \ \textsf 1 \equiv b
+    (\lambda i. t)~\textsf 1 \equiv b
   }{
-    \Gamma \vdash \lrangle i t : a =_X b
+    \Gamma \vdash \lrangle i~t : a =_X b
   }
   \xtag
 \]
@@ -47,15 +47,15 @@ Heterogeneously:
 
 \[
   \cfrac{
-    \Gamma \vdash a =_F b \ \textbf{type}
+    \Gamma \vdash a =_F b~\textbf{type}
     \quad
-    \Gamma, i : \mathbb I \vdash t : F \ i
+    \Gamma, i : \mathbb I \vdash t : F~i
     \quad
-    (\lambda i. t) \ \textsf 0 \equiv a
+    (\lambda i. t)~\textsf 0 \equiv a
     \quad
-    (\lambda i. t) \ \textsf 1 \equiv b
+    (\lambda i. t)~\textsf 1 \equiv b
   }{
-    \Gamma \vdash \lrangle i t : a =_F b
+    \Gamma \vdash \lrangle i~t : a =_F b
   }
   \xtag
 \]
@@ -83,9 +83,9 @@ will reduce to $a$ if $i \equiv \textsf 0$ or $b$ if $i \equiv \textsf 1$:
   \cfrac{
     \Gamma \vdash p : a =_X b
   }{
-    \Gamma \vdash p\ \textsf 0 \equiv a
+    \Gamma \vdash p~\textsf 0 \equiv a
     \quad
-    \Gamma \vdash p\ \textsf 1 \equiv b
+    \Gamma \vdash p~\textsf 1 \equiv b
   }
   \xtag \label{eqn:path-app}
 \]
@@ -104,11 +104,11 @@ as the introduction rule for path:
 
 \[
   \cfrac{
-    \Gamma \vdash X \ \textbf{type}
+    \Gamma \vdash X~\textbf{type}
     \quad
     \Gamma \vdash t : \mathbb I \rightarrow X
   }{
-    \Gamma \vdash \textsf{path} \ t : (t \ \textsf 0) =_X (t \ \textsf 1)
+    \Gamma \vdash \textsf{path}~t : (t~\textsf 0) =_X (t~\textsf 1)
   }
   \xtag
 \]
@@ -121,7 +121,7 @@ Thus the following judgement holds in Arend, say,
 that there exists a path between \textsf 0 and \textsf 1:
 
 \[
-  \vdash \textsf{path}\ (\lrangle i i) : \textsf 0 =_{\mathbb I} \textsf 1
+  \vdash \textsf{path}~(\lrangle i i) : \textsf 0 =_{\mathbb I} \textsf 1
   \xtag \label{eqn:0-1-arend}
 \]
 
@@ -182,7 +182,7 @@ The involution operation really inverts an interval, so it proves symmetry:
   \cfrac{
     \Gamma \vdash p : a =_A b
   }{
-    \Gamma \vdash (\lrangle i\ p (\neg i)) : b =_A a
+    \Gamma \vdash (\lrangle i~p (\neg i)) : b =_A a
   } \xtag
 \]
 

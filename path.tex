@@ -23,12 +23,12 @@ Therefore the formation rule for path types is naturally:
 
 \[
   \cfrac{
-    \Gamma \vdash X \ \textbf{type}
+    \Gamma \vdash X~\textbf{type}
     \quad
     \Gamma \vdash a : X
     \quad
     \Gamma \vdash b : X
-  }{\Gamma \vdash a =_X b \ \textbf{type}}
+  }{\Gamma \vdash a =_X b~\textbf{type}}
   \xtag
 \]
 
@@ -49,10 +49,10 @@ to allow paths between terms of different types:
   \cfrac{
     \Gamma \vdash F : (i : \mathbb I) \rightarrow \mathcal U
     \quad
-    \Gamma \vdash a : F\ \textsf 0
+    \Gamma \vdash a : F~\textsf 0
     \quad
-    \Gamma \vdash b : F\ \textsf 1
-  }{\Gamma \vdash a =_F b \ \textbf{type}}
+    \Gamma \vdash b : F~\textsf 1
+  }{\Gamma \vdash a =_F b ~\textbf{type}}
   \xtag \label{eqn:hetero-path}
 \]
 
@@ -77,24 +77,24 @@ the applicaiton to \textsf{coe}:
     \Gamma \vdash p : a =_A b
   }{
     \Gamma \vdash (\textsf{coe}
-    (\lambda i. (p\ i =_A a)) \ \refl_a)
-    : (i : \mathbb I) \rightarrow p\ i =_A a
+    (\lambda i. (p~i =_A a))~\refl_a)
+    : (i : \mathbb I) \rightarrow p~i =_A a
   }
   \xtag \label{eqn:coe-a-b-path-gen-eta}
 \]
 
-Also, we know that the term $t = \textsf{coe} (\lambda i. (p\ i =_A a)) \ \refl_a$
-satisfies $t\ \textsf 0 \equiv \refl_a$.
-Recall $t\ \textsf 1 : b =_A a$,
+Also, we know that the term $t = \textsf{coe} (\lambda i. (p~i =_A a))~\refl_a$
+satisfies $t~\textsf 0 \equiv \refl_a$.
+Recall $t~\textsf 1 : b =_A a$,
 we have the following definitional equalities:
 
 \[
-  t\ \textsf 0\ \textsf 0 \equiv a \xtag \quad
-  t\ \textsf 0\ \textsf 1 \equiv a \xtag
+  t~\textsf 0~\textsf 0 \equiv a \xtag \quad
+  t~\textsf 0~\textsf 1 \equiv a \xtag
 \]
 \[
-  t\ \textsf 1\ \textsf 0 \equiv b \xtag \quad
-  t\ \textsf 1\ \textsf 1 \equiv a \xtag
+  t~\textsf 1~\textsf 0 \equiv b \xtag \quad
+  t~\textsf 1~\textsf 1 \equiv a \xtag
 \]
 
 Here we can see $t$ as a higher-dimensional path,
@@ -106,11 +106,11 @@ of the shape in~\cref{fig:filler}.
 \begin{figure}
 \begin{center}
   \begin{tikzpicture}[node distance=1.5cm]
-    \node(1) {$b$ ($t\ \textsf 1\ \textsf 0, p\ \textsf 1$)};
-    \node(2) [right=4cm of 1] {$a$ ($t\ \textsf 1\ \textsf 1$)};
-    \node(4) [below of=1] {$a$ ($\refl_a\ \textsf 0, p\ \textsf 0$)};
-    \node(3) [below of=2] {$a$ ($\refl_a\ \textsf 1$)};
-    \draw (1) -- (2) node[midway,above] {$t\ \textsf 1 : b =_A a$};
+    \node(1) {$b$ ($t~\textsf 1~\textsf 0, p~\textsf 1$)};
+    \node(2) [right=4cm of 1] {$a$ ($t~\textsf 1~\textsf 1$)};
+    \node(4) [below of=1] {$a$ ($\refl_a~\textsf 0, p~\textsf 0$)};
+    \node(3) [below of=2] {$a$ ($\refl_a~\textsf 1$)};
+    \draw (1) -- (2) node[midway,above] {$t~\textsf 1 : b =_A a$};
     \draw (1) -- (4) node[midway,left ] {$p$};
     \draw (3) -- (2);
     \draw (3) -- (4) node[midway,below] {$\refl_a$};
@@ -128,6 +128,6 @@ while we informally call $t$ a \textit{filler} of the above square
 when talking about constructive interpretations.
 
 Note: fillers might be either paths or functions over intervals,
-so we can also say $\textsf{path} \ t$ is a filler of the same square.
+so we can also say $\textsf{path}~t$ is a filler of the same square.
 We use the term just to follow the convention.
 

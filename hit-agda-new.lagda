@@ -62,10 +62,10 @@ absolute-value (zro i)  = 0
 
 The constraint added by \AgdaInductiveConstructor{zro} is that the path
 $p=\textsf{ap}_{\AgdaFunction{absolute-value}}(\AgdaInductiveConstructor{zro})$
-should satisfy that $p\ \textsf 0 ≡ \AgdaFunction{absolute-value}
-(\AgdaInductiveConstructor{zro}\ \textsf 0)$ and
-$p\ \textsf 1 ≡ \AgdaFunction{absolute-value}
-(\AgdaInductiveConstructor{zro}\ \textsf 1)$.
+should satisfy that $p~\textsf 0 ≡ \AgdaFunction{absolute-value}
+(\AgdaInductiveConstructor{zro}~\textsf 0)$ and
+$p~\textsf 1 ≡ \AgdaFunction{absolute-value}
+(\AgdaInductiveConstructor{zro}~\textsf 1)$.
 In some sense, we can see the pattern matching clause for \AgdaInductiveConstructor{zro}
 as a \textit{propositional proof} (while for conditions it has to be definitional)
 that \AgdaFunction{absolute-value} respects \AgdaInductiveConstructor{zro}.
@@ -125,12 +125,12 @@ By this definition, the definitional equalities we get are not only:
 But also:
 
 \[
-  (λ i \ → \ \AgdaInductiveConstructor{square } i \AgdaInductiveConstructor{ i0})
+  (λ i~→~\AgdaInductiveConstructor{square } i \AgdaInductiveConstructor{ i0})
     \equiv \AgdaInductiveConstructor{line1}
   \xtag
 \]
 \[
-  (λ i \ → \ \AgdaInductiveConstructor{square } i \AgdaInductiveConstructor{ i1})
+  (λ i~→~\AgdaInductiveConstructor{square } i \AgdaInductiveConstructor{ i1})
     \equiv \AgdaInductiveConstructor{line1}
   \xtag
 \]
