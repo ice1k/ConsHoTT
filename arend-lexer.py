@@ -9,7 +9,7 @@ class ArendLexer(RegexLexer):
     tokens = {
         'root': [
             (r'\s+', Text),
-            (words(('Nat', 'coe', 'left', 'right', 'zero', 'path', 'suc')), Name.Builtin),
+            (words(('Nat', 'coe', 'psqueeze', 'left', 'right', 'zero', 'path', 'suc')), Name.Builtin),
             (r'--[^\n\r]*', Comment),
             (r'(\\data)(\s+)([a-zA-Z0-9_\-\']+)',
               bygroups(Keyword, Text, Name.Class)),
@@ -17,6 +17,7 @@ class ArendLexer(RegexLexer):
               bygroups(Keyword, Text, Name.Function)),
             (r'\\[a-zA-Z\-0-9]+', Keyword),
             (r'=>?', Operator),
+            (r'->?', Operator),
             (r'[\(\)\{\}]', Operator),
             (r'[:@\|,]', Operator),
             (r'[a-zA-Z0-9_\']+', Text),
