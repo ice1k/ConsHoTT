@@ -8,6 +8,8 @@ my $mds = `cat *.lagda *.tex`;
 
 $mds =~ s/\\begin\{.*\}//g;
 $mds =~ s/\\end\{.*\}//g;
+$mds =~ s/subsubsec//g;
+$mds =~ s/subsec//g;
 $mds =~ s/\\[a-zA-Z0-9]+//g;
 
 my $arg = "--width 1280 --height 720 --background white --color blue";
